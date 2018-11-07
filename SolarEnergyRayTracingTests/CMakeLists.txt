@@ -1,0 +1,5 @@
+project(soloarEnergyRayTracing_tests)
+
+add_subdirectory(lib/googletest-master)
+add_subdirectory(ToolTests)
+add_subdirectory(DataStructureTests)
