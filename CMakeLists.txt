@@ -12,16 +12,15 @@ add_subdirectory(Tool/RandomNumberGenerator)
 add_subdirectory(Tool/FileLoader)
 
 # Data Structure
-add_subdirectory(DataStructure)
-include_directories("${PROJECT_SOURCE_DIR}/DataStructure")
+add_subdirectory(Scene)
 
 # Tests
 set(GOOGLE_TEST_PATH SolarEnergyRayTracingTests)
 add_subdirectory(${GOOGLE_TEST_PATH})
 
 # Set Libs
-set (EXTRA_LIBS ${EXTRA_LIBS} datastructure randomGenerator)
+#set (EXTRA_LIBS ${EXTRA_LIBS} datastructure randomGenerator)
 
 # Finial Project
 add_executable(SolarEnergyRayTracing main.cpp)
-target_link_libraries (SolarEnergyRayTracing ${EXTRA_LIBS})
+#target_link_libraries (SolarEnergyRayTracing ${EXTRA_LIBS})

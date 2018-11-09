@@ -88,35 +88,12 @@ void RectGrid::CGridHelioMatch(
 /**
  * Getter and setter of attributes for RectGrid
  */
-const float3 &RectGrid::getPosition() const {
-    return pos_;
-}
-
-void RectGrid::setPosition(float3 pos_) {
-    RectGrid::pos_ = pos_;
-}
-
-const float3 &RectGrid::getSize() const {
-    return size_;
-}
-
-void RectGrid::setSize(float3 size_) {
-    RectGrid::size_ = size_;
-}
-
-const float3 &RectGrid::getInterval() const {
-    return interval_;
-}
-
-void RectGrid::setInterval(float3 interval_) {
-    RectGrid::interval_ = interval_;
-}
 
 const int3 &RectGrid::getGridNumber() const {
     return grid_num_;
 }
 
-void RectGrid::setGrid_num_(int3 grid_num_) {
+void RectGrid::setGridNumber(int3 grid_num_) {
     RectGrid::grid_num_ = grid_num_;
 }
 

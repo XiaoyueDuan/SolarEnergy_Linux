@@ -1,16 +1,18 @@
 #ifndef SOLARENERGYRAYTRACING_HELIOSTAT_CUH
 #define SOLARENERGYRAYTRACING_HELIOSTAT_CUH
 
+#include <cuda_runtime.h>
+
 enum SubCenterType
 {
-    Grid,
+    Square,
     Poisson
 };
 
 class Heliostat
 {
 public:
-    __device__ __host__ Heliostat():type_(Grid){}
+    Heliostat():subCenterType_(Square){}
 
     virtual void CRotate(const float3 &focus_center, const float3 &sunray_dir) = 0;
 
@@ -29,8 +31,8 @@ public:
     const float2 &getGap() const;
     void setGap(float2 gap_);
 
-    SubCenterType getType() const;
-    void setType(SubCenterType type_);
+    SubCenterType getSubCenterType() const;
+    void setSubCenterType(SubCenterType type_);
 
     float getPixelLength() const;
     void setPixelLength(float pixel_length_);
@@ -41,7 +43,7 @@ protected:
     float3 normal_;
     int2 row_col_;		// How many mirrors compose a heliostat
     float2 gap_;		// The gap between mirrors
-    SubCenterType type_;
+    SubCenterType subCenterType_;
     float pixel_length_;
 };
 

@@ -7,6 +7,5 @@ cmake-build-debug/
 .idea
 
 # Third-party files
-DataStructure/Scene/json-develop
 SolarEnergyRayTracingTests/lib
-
+Scene/json-develop

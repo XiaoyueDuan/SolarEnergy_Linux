@@ -22,6 +22,15 @@ public:
     int getGridType() const;
     void setGridType(int type_);
 
+    const float3 &getPosition() const;
+    void setPosition(float3 pos_);
+
+    const float3 &getSize() const;
+    void setSize(float3 size_);
+
+    const float3 &getInterval() const;
+    void setInterval(float3 interval_);
+
     int getHeliostatType() const;
     void setHeliostatType(int helio_type_);
 
@@ -31,11 +40,18 @@ public:
     int getNumberOfHeliostats() const;
     void setNumberOfHeliostats(int num_helios_);
 
+    int getBelongingReceiverIndex() const;
+    void setBelongingReceiverIndex(int belonging_receiver_index_);
+
 protected:
     int type_;
+    float3 pos_;
+    float3 size_;
+    float3 interval_;
     int helio_type_;
     int start_helio_pos_;			// the first helio index of the helio lists in this grid
     int num_helios_;				// How many heliostats in the grid
+    int belonging_receiver_index_;
 };
 
 #endif //SOLARENERGYRAYTRACING_GRID_CUH

@@ -22,19 +22,8 @@ public:
             d_grid_helio_index_ = nullptr;
     }
 
-private:
-public:
-    const float3 &getPosition() const;
-    void setPosition(float3 pos_);
-
-    const float3 &getSize() const;
-    void setSize(float3 size_);
-
-    const float3 &getInterval() const;
-    void setInterval(float3 interval_);
-
     const int3 &getGridNumber() const;
-    void setGrid_num_(int3 grid_num_);
+    void setGridNumber(int3 grid_num_);
 
     int *getDeviceGridHeliostatMatch() const;
     void setDeviceGridHeliostatMatch(int *d_grid_helio_match_);
@@ -46,9 +35,6 @@ public:
     void setNumberOfGridHeliostatMatch(size_t num_grid_helio_match_);
 
 private:
-    float3 pos_;
-    float3 size_;
-    float3 interval_;
     int3 grid_num_;						// x * y * z 's sub-grid
     int *d_grid_helio_match_;			// size = num_grid_helio_match_
     int *d_grid_helio_index_;			// size = size.x * size.y * size.z +1

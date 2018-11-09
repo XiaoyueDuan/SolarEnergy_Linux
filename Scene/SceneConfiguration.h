@@ -5,7 +5,7 @@
 #ifndef SOLARENERGYRAYTRACING_SCENECONFIGURATION_H
 #define SOLARENERGYRAYTRACING_SCENECONFIGURATION_H
 
-#include <cuda_runtime.h>
+#include "cuda_runtime.h"
 #include <string>
 
 class SceneConfiguration {
@@ -15,7 +15,6 @@ private:
     }
     static SceneConfiguration *sceneConfigurationInstance;
 
-private:
     const int num_of_fields = 9;
 
     float3 sun_dir;

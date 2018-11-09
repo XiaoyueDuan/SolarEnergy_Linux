@@ -19,27 +19,33 @@ class SolarScene {
 private:
     SolarScene();
 
+    static SolarScene *m_instance;		//Singleton
+
     float ground_length_;
     float ground_width_;
     int grid_num_;
-    static SolarScene *m_instance;		//Singleton
-
-public:
-    static SolarScene* GetInstance();   //static member
-    static void InitInstance();
-    ~SolarScene();
-
-    bool InitSolarScene();
-    bool InitSolarScene(string filepath);
-    bool LoadSceneFromFile(string filepath);
-
-    // Call the method only if all grids, heliostats and receivers needs initializing.
-    bool InitContent();
 
     Sunray *sunray;
     vector<Grid *> grid0s;
     vector<Heliostat *> heliostats;
     vector<Receiver *> receivers;
+
+public:
+    static SolarScene* GetInstance();   //static member
+    ~SolarScene();
+
+    float getGroundLength() const;
+    void setGroundLength(float ground_length_);
+
+    float getGroundWidth() const;
+    void setGroundWidth(float ground_width_);
+
+    int getNumberOfGrid() const;
+    void setNumberOfGrid(int grid_num_);
+
+    void addReceiver(Receiver *receiver);
+    void addGrid(Grid *grid);
+    void addHeliostat(Heliostat *heliostat);
 };
 
 #endif //SOLARENERGYRAYTRACING_SOLARSCENE_H

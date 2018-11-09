@@ -20,11 +20,9 @@ public:
     bool parser(int argc, char **argv);
 
     const std::string &getConfigurationPath() const;
-
     bool setConfigurationPath(const std::string &configuration_path);
 
     const std::string &getScenePath() const;
-
     bool setScenePath(const std::string &scene_path);
 
 };

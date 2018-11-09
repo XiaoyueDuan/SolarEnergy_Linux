@@ -44,70 +44,70 @@ int Receiver::getType() const {
     return type_;
 }
 
-void Receiver::setType(int type_) {
-    Receiver::type_ = type_;
+void Receiver::setType(int type) {
+    type_ = type;
 }
 
 const float3 &Receiver::getNormal() const {
     return normal_;
 }
 
-void Receiver::setNormal(float3 normal_) {
-    Receiver::normal_ = normal_;
+void Receiver::setNormal(float3 normal) {
+    normal_ = normal;
 }
 
 const float3 &Receiver::getPosition() const {
     return pos_;
 }
 
-void Receiver::setPosition(float3 pos_) {
-    Receiver::pos_ = pos_;
+void Receiver::setPosition(float3 pos) {
+    pos_ = pos;
 }
 
 const float3 &Receiver::getSize() const {
     return size_;
 }
 
-void Receiver::setSize(float3 size_) {
-    Receiver::size_ = size_;
+void Receiver::setSize(float3 size) {
+    size_ = size;
 }
 
 const float3 &Receiver::getFocusCenter() const {
     return focus_center_;
 }
 
-void Receiver::setFocusCenter(float3 focus_center_) {
-    Receiver::focus_center_ = focus_center_;
+void Receiver::setFocusCenter(float3 focus_center) {
+    focus_center_ = focus_center;
 }
 
 int Receiver::getFaceIndex() const {
     return face_num_;
 }
 
-void Receiver::setFaceIndex(int face_num_) {
-    Receiver::face_num_ = face_num_;
+void Receiver::setFaceIndex(int face_num) {
+    face_num_ = face_num;
 }
 
 float Receiver::getPixelLength() const {
     return pixel_length_;
 }
 
-void Receiver::setPixelLength(float pixel_length_) {
-    Receiver::pixel_length_ = pixel_length_;
+void Receiver::setPixelLength(float pixel_length) {
+    pixel_length_ = pixel_length;
 }
 
 float *Receiver::getDeviceImage() const {
     return d_image_;
 }
 
-void Receiver::setDeviceImage(float *d_image_) {
-    Receiver::d_image_ = d_image_;
+void Receiver::setDeviceImage(float *d_image) {
+    d_image_ = d_image;
 }
 
 const int2 &Receiver::getResolution() const {
     return resolution_;
 }
 
-void Receiver::setResolution(int2 resolution_) {
-    Receiver::resolution_ = resolution_;
+void Receiver::setResolution(int2 resolution) {
+    resolution_ = resolution;
 }

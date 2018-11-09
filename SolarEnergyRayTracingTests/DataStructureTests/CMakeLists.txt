@@ -18,7 +18,11 @@ include_directories("${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR}")
 
 # Add the files to be tested
 # 1. scene configuration
-include_directories("${CMAKE_SOURCE_DIR}/DataStructure/Scene")
-target_link_libraries(DataStructureTests sceneConfigurator)
+include_directories("${CMAKE_SOURCE_DIR}/Scene")
+#target_link_libraries(DataStructureTests sceneConfigurator)
+#target_link_libraries(DataStructureTests solarScene)
+#target_link_libraries(DataStructureTests sceneLoader)
+
+target_link_libraries(DataStructureTests datastructure)
 
 message("---------- Data Structure Test cmake ends ---------- ")
