@@ -23,7 +23,7 @@ float3 setFloat3Field(std::string field_name, std::istream &stringstream) {
     return ans;
 }
 
-int setIntField(std::string field_name, std::istream &stringstream) {
+int setIntField(const std::string &field_name, std::istream &stringstream) {
     string head;
     stringstream >> head;
 
@@ -35,7 +35,7 @@ int setIntField(std::string field_name, std::istream &stringstream) {
     return ans;
 }
 
-void checkIsolatedField(std::string field_name, std::istream &stringstream) {
+void checkIsolatedField(const std::string &field_name, std::istream &stringstream) {
     string head;
     stringstream >> head;
 
@@ -43,6 +43,52 @@ void checkIsolatedField(std::string field_name, std::istream &stringstream) {
         throw std::runtime_error("Miss '" + field_name + "' property.\n");
     }
 }
+
+class incorresponding_error {
+public:
+    incorresponding_error(const std::string &wrong_filed_name, int expect_number, int real_number,
+                          const std::string &belong_filed_name, int belong_field_id) {
+        setErrorMessage(wrong_filed_name, expect_number, real_number, belong_filed_name, belong_field_id);
+    }
+
+    incorresponding_error(const std::string &wrong_filed_name, int wrong_field_id, int wrong_belong_id,
+                          const std::string &belong_filed_name, int expect_belong_field_id1,
+                          int expect_belong_field_id2) {
+        setErrorMessage(wrong_filed_name, wrong_field_id, wrong_belong_id,
+                        belong_filed_name, expect_belong_field_id1, expect_belong_field_id2);
+    }
+
+    incorresponding_error(std::string error_message) {
+        incorresponding_error::error_message = error_message;
+    }
+
+    std::string what() {
+        return error_message;
+    }
+
+private:
+    std::string error_message;
+
+    void setErrorMessage(const std::string &wrong_filed_name, int expect_number, int real_number,
+                         const std::string &belong_filed_name, int belong_field_id) {
+        error_message =
+                "The " + std::to_string(belong_field_id) + "-th " + belong_filed_name + " should contain " +
+                std::to_string(expect_number) + " " + wrong_filed_name + "(s), but got " +
+                std::to_string(real_number) + " " + wrong_filed_name + "(s).";
+    }
+
+    void setErrorMessage(const std::string &wrong_filed_name, int wrong_field_id, int real_belong_id,
+                         const std::string &belong_filed_name, int expect_belong_field_id1,
+                         int expect_belong_field_id2) {
+        error_message =
+                "The " + std::to_string(wrong_field_id) + "-th " + wrong_filed_name + " is expected belonging to " +
+                std::to_string(expect_belong_field_id1) + "-th ";
+        if (expect_belong_field_id1 != expect_belong_field_id2) {
+            error_message += "or " + std::to_string(expect_belong_field_id2) + "-th ";
+        }
+        error_message += belong_filed_name + ", but got " + std::to_string(real_belong_id) + ".";
+    }
+};
 
 void SceneLoader::add_ground(SolarScene *solarScene, std::istream &stringstream) {
     float ground_length, ground_width;
@@ -128,14 +174,56 @@ void SceneLoader::add_heliostat(SolarScene *solarScene, std::istream &stringstre
     solarScene->addHeliostat(heliostat);
 }
 
+void SceneLoader::checkScene(SolarScene *solarScene) {
+    /**
+     * Check whether the scene is valid:
+     *  - scene.grid_num_ == scene.grid0s.size()
+     *  - each grid in scene:
+     *      - belonging_receiver_index_ should be continuous increasing
+     *      - the num_helios == grid[i+1].start_helio_pos_ - grid[i].start_helio_pos_
+     * */
+
+    if (solarScene->getNumberOfGrid() != solarScene->getGrid0s().size()) {
+        string error_message = "The scene should contains " + std::to_string(solarScene->getNumberOfGrid())
+                               + " grids, but got " + std::to_string(solarScene->getGrid0s().size()) + " grids.";
+        throw incorresponding_error(error_message);
+    }
+
+    vector<Grid *> grids = solarScene->getGrid0s();
+    for (int i = 0; i < grids.size(); ++i) {
+        int num_of_expect_heliostat = grids[i]->getNumberOfHeliostats();
+        int num_of_exist_helistat = (i == grids.size() - 1) ?
+                                    solarScene->getHeliostats().size() : grids[i + 1]->getStartHeliostatPosition();
+        num_of_exist_helistat -= grids[i]->getStartHeliostatPosition();
+
+        if (num_of_exist_helistat != num_of_expect_heliostat) {
+            throw incorresponding_error("heliostat", num_of_expect_heliostat, num_of_exist_helistat, "grid", i + 1);
+        }
+
+        int belong_receiver_index = grids[i]->getBelongingReceiverIndex();
+        if (!i && belong_receiver_index != 0) {
+            throw incorresponding_error("grid", i, belong_receiver_index, "receiver", 0, 0);
+        } else {
+            int prev_belong_receiver_index = grids[i - 1]->getBelongingReceiverIndex();
+            if (belong_receiver_index != prev_belong_receiver_index &&
+                belong_receiver_index != prev_belong_receiver_index + 1) {
+
+                throw incorresponding_error("grid", i, belong_receiver_index,
+                                            "receiver", prev_belong_receiver_index, prev_belong_receiver_index + 1);
+            }
+        }
+    }
+}
+
 bool SceneLoader::SceneFileRead(SolarScene *solarScene, std::string filepath) {
     int2 matrix = make_int2(1, 1);
     float2 gap = make_float2(0.0f, 0.0f);
     std::string head;
     int receiver_id = -1;
+    int grid_id_for_each_receiver = 0;
+    int heliostat_id_for_each_gird = 0;
     int current_total_heliostat = 0;
     int heliostat_type = -1;
-    int line_id = 0;
 
     try {
         std::ifstream scene_file(filepath);
@@ -148,8 +236,6 @@ bool SceneLoader::SceneFileRead(SolarScene *solarScene, std::string filepath) {
 
         current_status = sceneRETree_.getRoot();
         while (scene_stream >> head) {
-            ++line_id;
-
             if (head[0] == '#') {
                 std::string comment;
                 getline(scene_stream, comment);
@@ -167,22 +253,32 @@ bool SceneLoader::SceneFileRead(SolarScene *solarScene, std::string filepath) {
                 current_status = sceneRETree_.step_forward(current_status, 'R');
                 add_receiver(solarScene, scene_stream);
                 ++receiver_id;
+                grid_id_for_each_receiver = 0;
             } else if (head == "Grid") {
                 current_status = sceneRETree_.step_forward(current_status, 'G');
                 heliostat_type = add_grid(solarScene, scene_stream, receiver_id, current_total_heliostat);
+                ++grid_id_for_each_receiver;
+                heliostat_id_for_each_gird = 0;
             } else if (head == "helio") {
                 current_status = sceneRETree_.step_forward(current_status, 'H');
                 add_heliostat(solarScene, scene_stream, heliostat_type, gap, matrix);
+                ++heliostat_id_for_each_gird;
                 ++current_total_heliostat;
             } else {
                 current_status = sceneRETree_.step_forward(current_status, '?');
             }
         }
 
+        checkScene(solarScene);
+        solarScene->setLoaded_from_file(true);
         return true;
+    } catch (incorresponding_error e) {
+        std::cerr << "Error caused by '" << e.what() << "'." << endl;
     } catch (std::runtime_error runtime_error1) {
-        std::cerr << "Error occurs at line " << line_id << " with head '" << head << "'.\nThis is caused by '"
-                  << runtime_error1.what() << "'" << std::endl;
+        std::cerr << "Error occurs at " << std::to_string(receiver_id + 1) << "-th receiver, "
+                  << std::to_string(grid_id_for_each_receiver) << "-th grid ,"
+                  << std::to_string(heliostat_id_for_each_gird) << "-th heliostat with head '" << head
+                  << "'.\nThis is caused by '" << runtime_error1.what() << "'" << std::endl;
         return false;
     }
 }

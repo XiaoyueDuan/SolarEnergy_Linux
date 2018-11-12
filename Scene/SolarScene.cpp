@@ -2,8 +2,9 @@
 // Created by dxt on 18-11-1.
 //
 
-#include "SolarScene.h"
+#include "destroy.h"
 #include "RandomNumberGenerator/RandomGenerator.cuh"
+#include "SolarScene.h"
 
 SolarScene* SolarScene::m_instance;
 SolarScene* SolarScene::GetInstance()
@@ -14,23 +15,32 @@ SolarScene* SolarScene::GetInstance()
     return m_instance;
 }
 
-SolarScene::SolarScene() {
+SolarScene::SolarScene():loaded_from_file(false), sunray(nullptr) {
     //init the random
     RandomGenerator::initSeed();
     RandomGenerator::initCudaRandGenerator();
 }
 
 SolarScene::~SolarScene() {
-//    // 1. free memory on GPU
-//    free_scene::gpu_free(receivers);
-//    free_scene::gpu_free(grid0s);
-//    free_scene::gpu_free(sunray_);
-//
-//    // 2. free memory on CPU
-//    free_scene::cpu_free(receivers);
-//    free_scene::cpu_free(grid0s);
-//    free_scene::cpu_free(heliostats);
-//    free_scene::cpu_free(sunray_);
+    clear();
+}
+
+bool SolarScene::clear() {
+    // 1. Free memory on GPU
+    free_scene::gpu_free(receivers);
+    free_scene::gpu_free(grid0s);
+    free_scene::gpu_free(sunray);
+
+    // 2. Free memory on CPU
+    free_scene::cpu_free(receivers);
+    free_scene::cpu_free(grid0s);
+    free_scene::cpu_free(heliostats);
+    free_scene::cpu_free(sunray);
+
+    // 3. Clear vector
+    receivers.clear();
+    grid0s.clear();
+    heliostats.clear();
 }
 
 float SolarScene::getGroundLength() const {
@@ -67,4 +77,28 @@ void SolarScene::addGrid(Grid *grid) {
 
 void SolarScene::addHeliostat(Heliostat *heliostat) {
     heliostats.push_back(heliostat);
+}
+
+bool SolarScene::isLoaded_from_file() const {
+    return loaded_from_file;
+}
+
+void SolarScene::setLoaded_from_file(bool loaded_from_file) {
+    SolarScene::loaded_from_file = loaded_from_file;
+}
+
+Sunray *SolarScene::getSunray() {
+    return sunray;
+}
+
+vector<Grid *> &SolarScene::getGrid0s() {
+    return grid0s;
+}
+
+vector<Heliostat *> &SolarScene::getHeliostats() {
+    return heliostats;
+}
+
+vector<Receiver *> &SolarScene::getReceivers() {
+    return receivers;
 }

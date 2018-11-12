@@ -15,6 +15,8 @@ void printSceneConfiguration(SceneConfiguration *sceneConfiguration) {
     printf("\tCSR - %.4f\n", sceneConfiguration->getCsr());
     printf("\tNumber of Sunshape_Groups - %d\n", sceneConfiguration->getNum_sunshape_groups());
     printf("\tNumber of Lights per Sunshape_Group - %d\n", sceneConfiguration->getNum_sunshape_lights_per_group());
+    printf("\tNumber of Inverse Transform Sampling Group - %d\n",
+           sceneConfiguration->getInverse_transform_sampling_groups());
 
     printf("\nReceiver related fields:\n");
     printf("\tLength of Receiver Pixel - %.4f\n", sceneConfiguration->getReceiver_pixel_length());
@@ -28,7 +30,7 @@ void printSceneConfiguration(SceneConfiguration *sceneConfiguration) {
 TEST(loadConfiguration, goodExample) {
     SceneConfiguration *sceneConfiguration = SceneConfiguration::getInstance();
     std::string configuration_path = "test_file/test_configuration.json";
-    EXPECT_EQ(9, sceneConfiguration->loadConfiguration(configuration_path));
+    EXPECT_EQ(sceneConfiguration->num_of_fields, sceneConfiguration->loadConfiguration(configuration_path));
 
     printf("Good Example:");
     printSceneConfiguration(sceneConfiguration);

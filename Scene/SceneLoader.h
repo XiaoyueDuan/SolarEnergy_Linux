@@ -20,6 +20,7 @@ private:
             std::istream &stringstream, int receiver_index, int heliostat_start_index);
     void add_heliostat(SolarScene *solarScene, std::istream &stringstream,
             int type, float2 gap, int2 matrix);
+    void checkScene(SolarScene *solarScene);
 public:
     SceneLoader():current_status(nullptr) {}
 

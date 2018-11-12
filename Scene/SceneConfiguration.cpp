@@ -7,7 +7,7 @@
 #include "nlohmann/json.hpp"
 #include "SceneConfiguration.h"
 
-SceneConfiguration* SceneConfiguration::sceneConfigurationInstance;
+SceneConfiguration *SceneConfiguration::sceneConfigurationInstance;
 
 SceneConfiguration *SceneConfiguration::getInstance() {
     if (sceneConfigurationInstance == nullptr) {
@@ -41,7 +41,7 @@ int set_3field(T &field, std::string field_json_format, nlohmann::json &json) {
 
 int SceneConfiguration::loadConfiguration(std::string configuration_file_path) {
     std::ifstream inputJsonFile(configuration_file_path);
-    if(inputJsonFile.fail()) {
+    if (inputJsonFile.fail()) {
         printf("The file '%s' does not exist", configuration_file_path.c_str());
         return -1;
     }
@@ -58,6 +58,7 @@ int SceneConfiguration::loadConfiguration(std::string configuration_file_path) {
     ans += set_field(csr, "csr", json);
     ans += set_field(num_sunshape_groups, "num_of_sunshape_groups", json);
     ans += set_field(num_sunshape_lights_per_group, "num_per_sunshape_group", json);
+    ans += set_field(inverse_transform_sampling_groups, "inverse_transform_sampling_groups", json);
 
     ans += set_field(receiver_pixel_length, "receiver_pixel_length", json);
 
@@ -65,7 +66,7 @@ int SceneConfiguration::loadConfiguration(std::string configuration_file_path) {
     ans += set_field(helio_pixel_length, "helio_reflected_rate", json);
     ans += set_field(reflected_rate, "helio_pixel_length", json);
 
-    if(ans!=num_of_fields) {
+    if (ans != num_of_fields) {
         printf("Noted: not all fields are set. You may need to check your configuration file.\n");
     }
     return ans;
@@ -105,4 +106,8 @@ float SceneConfiguration::getHelio_pixel_length() const {
 
 float SceneConfiguration::getReflected_rate() const {
     return reflected_rate;
+}
+
+int SceneConfiguration::getInverse_transform_sampling_groups() const {
+    return inverse_transform_sampling_groups;
 }

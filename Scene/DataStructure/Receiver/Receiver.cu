@@ -2,32 +2,28 @@
 #include "check_cuda.h"
 #include "global_function.cuh"
 
-Receiver::~Receiver()
-{
+Receiver::~Receiver() {
     if (d_image_)
         d_image_ = nullptr;
 }
 
-void Receiver::CClear()
-{
-    if (d_image_)
-    {
-        cudaFree(d_image_);
+void Receiver::CClear() {
+    if (d_image_) {
+        checkCudaErrors(cudaFree(d_image_));
         d_image_ = nullptr;
     }
 }
 
-void Receiver::Calloc_image()
-{
-    checkCudaErrors(cudaMalloc((void **)&d_image_, sizeof(float)*resolution_.x*resolution_.y));
+void Receiver::Calloc_image() {
+    checkCudaErrors(cudaMalloc((void **) &d_image_, sizeof(float) * resolution_.x * resolution_.y));
 }
 
-void Receiver::Cclean_image_content()
-{
-    int n_resolution = resolution_.x*resolution_.y;
+void Receiver::Cclean_image_content() {
+    int n_resolution = resolution_.x * resolution_.y;
     float *h_clean_receiver = new float[n_resolution];
-    for (int i = 0; i < n_resolution; ++i)
+    for (int i = 0; i < n_resolution; ++i) {
         h_clean_receiver[i] = 0.0f;
+    }
 
     // clean screen
     global_func::cpu2gpu(d_image_, h_clean_receiver, n_resolution);

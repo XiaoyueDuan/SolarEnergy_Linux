@@ -15,13 +15,12 @@ private:
     }
     static SceneConfiguration *sceneConfigurationInstance;
 
-    const int num_of_fields = 9;
-
     float3 sun_dir;
     float dni = 0.1f;
     float csr = 1000.0f;
     int num_sunshape_groups = 128;
     int num_sunshape_lights_per_group = 2048;
+    int inverse_transform_sampling_groups = 1024;
 
     float receiver_pixel_length = 0.01f;
 
@@ -41,10 +40,15 @@ public:
     float getCsr() const;
     int getNum_sunshape_groups() const;
     int getNum_sunshape_lights_per_group() const;
+    int getInverse_transform_sampling_groups() const;
+
     float getReceiver_pixel_length() const;
     float getDisturb_std() const;
     float getHelio_pixel_length() const;
     float getReflected_rate() const;
+
+    // For tests
+    const int num_of_fields = 10;
 };
 
 

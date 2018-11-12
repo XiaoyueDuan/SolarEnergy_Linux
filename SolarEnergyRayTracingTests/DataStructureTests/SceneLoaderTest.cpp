@@ -2,7 +2,6 @@
 // Created by dxt on 18-11-7.
 //
 
-//#include "SceneLoader.cuh"
 #include "SceneLoader.h"
 #include "gtest/gtest.h"
 
@@ -36,5 +35,14 @@ TEST_F(SceneLoaderFixture, badExampleUnknownFields) {
 
 TEST_F(SceneLoaderFixture, badExampleNonRegularExpressionFormat) {
     std::string badExamplePath = "test_file/test_scene_bad_nonRE.scn";
+    EXPECT_FALSE(sceneLoader->SceneFileRead(solarScene, badExamplePath));
+}
+
+TEST_F(SceneLoaderFixture, badExampleIncorrectNumberOfCorresponding) {
+    std::string badExamplePath = "test_file/test_scene_bad_corresponding.scn";
+    EXPECT_FALSE(sceneLoader->SceneFileRead(solarScene, badExamplePath));
+
+    solarScene->clear();
+    badExamplePath = "test_file/test_scene_bad_corresponding2.scn";
     EXPECT_FALSE(sceneLoader->SceneFileRead(solarScene, badExamplePath));
 }
