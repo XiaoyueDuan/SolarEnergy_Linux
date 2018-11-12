@@ -1,0 +1,16 @@
+//
+// Created by dxt on 18-11-11.
+//
+
+#ifndef SOLARENERGYRAYTRACING_SCENEPROCESSOR_H
+#define SOLARENERGYRAYTRACING_SCENEPROCESSOR_H
+
+
+
+class SceneProcessor {
+
+};
+
+
+
+#endif //SOLARENERGYRAYTRACING_SCENEPROCESSOR_H
