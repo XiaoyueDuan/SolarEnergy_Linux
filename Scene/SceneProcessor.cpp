@@ -32,7 +32,7 @@ bool SceneProcessor::setGridReceiverHeliostatContent(std::vector<Grid *> &grids,
         for (int i = 0; i < grid->getNumberOfHeliostats(); ++i) {
             int id = i + grid->getStartHeliostatPosition();
             heliostats[id]->setPixelLength(heliostat_pixel_length);
-            heliostats[id]->CRotate(focus_center, sun_direction);
+            heliostats[id]->CSetNormalAndRotate(focus_center, sun_direction);
         }
     }
     return true;

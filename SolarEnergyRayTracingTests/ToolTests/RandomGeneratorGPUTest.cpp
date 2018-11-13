@@ -26,6 +26,8 @@ protected:
 
         checkCudaErrors(cudaFree(d_min_max_array));
         d_min_max_array = nullptr;
+
+        RandomGenerator::destroyCudaRandGenerator();
     }
 
 public:

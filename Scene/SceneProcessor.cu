@@ -89,6 +89,38 @@ namespace samplelights {
         float theta = d_nonUniform[myId], phi = d_uniform[myId] * 2 * MATH_PI;
         d_turbulance[myId] = global_func::angle2xyz(make_float2(theta, phi));
     }
+
+    /**
+     * For SceneProcessorTest.cpp
+     * */
+    void draw_distribution(float *d_float_array, int size, float lower_bound,
+                           float upper_bound, std::string random_number_name) {
+        const int nstars = 1000;    // maximum number of stars to distribute
+        const int nHist = 20;
+
+        vector<int> histogram(nHist, 0);
+
+        float *h_float_array = nullptr;
+        global_func::gpu2cpu( h_float_array, d_float_array, size);
+
+        float gap = (upper_bound - lower_bound) / float(nHist);
+        for (int i = 0; i < size; ++i) {
+            if (h_float_array[i] > lower_bound && h_float_array[i] < upper_bound) {
+                int n = (h_float_array[i] - lower_bound) / gap;
+                ++histogram[n];
+            }
+        }
+
+        std::cout << "Distribution of " << random_number_name << ":" << std::endl;
+        std::cout << std::setprecision(2) << lower_bound << endl;
+        for (int h:histogram) {
+            std::cout << "\t" << std::string(h * nstars / size, '*') << std::endl;
+        }
+        std::cout << std::setprecision(2) << upper_bound << endl;
+
+        delete[] h_float_array;
+        h_float_array = nullptr;
+    }
 }
 
 /**
@@ -98,7 +130,7 @@ namespace samplelights {
  * */
 
 bool SceneProcessor::set_perturbation(Sunray &sunray) {
-    if(sunray.getDevicePerturbation()) {
+    if (sunray.getDevicePerturbation()) {
         // Make sure the sunray.perturbation are empty.
         // If not, you clean the device perturbation before calling this method
         return false;
@@ -119,6 +151,11 @@ bool SceneProcessor::set_perturbation(Sunray &sunray) {
     //	Step 3:	Generate theta and phi
     RandomGenerator::gpu_Gaussian(d_guassian_theta, 0.0f, sceneConfiguration->getDisturb_std(), size);
     RandomGenerator::gpu_Uniform(d_uniform_phi, size);
+
+#ifdef SCENE_PROCESSOR_TEST_CPP
+    samplelights::draw_distribution(d_guassian_theta, size, -0.050f, 0.050f, "theta");
+    samplelights::draw_distribution(d_uniform_phi, size, 0.0f, 1.0f, "phi");
+#endif
 
     //	Step 4:	(theta, phi) -> ( x, y, z)
     int nThreads;
@@ -141,7 +178,7 @@ bool SceneProcessor::set_perturbation(Sunray &sunray) {
  *  - phi ~ Uniform(0, 2pi)
  * */
 bool SceneProcessor::set_samplelights(Sunray &sunray) {
-    if(sunray.getDeviceSampleLights()) {
+    if (sunray.getDeviceSampleLights()) {
         // Make sure the sunray.samplelights are empty.
         // If not, you clean the device sample lights before calling this method
         return false;
@@ -188,6 +225,13 @@ bool SceneProcessor::set_samplelights(Sunray &sunray) {
     // Change to correct theta
     samplelights::linear_interpolate << < nBlock, nThreads >> > (d_theta, d_cdf, d_k, value_less_465, gamma,
             A, B, C, num_group, num_random);
+    cudaDeviceSynchronize();
+    checkCudaErrors(cudaGetLastError());
+
+#ifdef SCENE_PROCESSOR_TEST_CPP
+    samplelights::draw_distribution(d_theta, num_random, 0.0f, 0.0093f, "theta");
+    samplelights::draw_distribution(d_phi, num_random, 0.0f, 1.0f, "phi");
+#endif
 
     float3 *d_samplelights = nullptr;
     cudaMalloc((void **) &d_samplelights, sizeof(float3) * num_random);

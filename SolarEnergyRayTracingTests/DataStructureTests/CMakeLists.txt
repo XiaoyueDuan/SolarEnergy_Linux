@@ -12,9 +12,14 @@ file(GLOB CURRENT_SOURCES *.cpp *.cu)
 message("Test files name: ${CURRENT_SOURCES}")
 cuda_add_executable(DataStructureTests ${CURRENT_SOURCES})
 target_link_libraries(DataStructureTests gtest gtest_main)
+target_link_libraries(DataStructureTests gmock gmock_main)
 
 # Add Google Tests
-include_directories("${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR}")
+#target_include_directories(DataStructureTests PUBLIC "${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR}")
+#target_include_directories(DataStructureTests PUBLIC "${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR}")
+
+message("dxy-test: ${gmock_SOURCE_DIR}")
+message("dxy-test: ${gtest_SOURCE_DIR}")
 
 # Add the files to be tested
 # 1. scene configuration

@@ -16,8 +16,8 @@ private:
     static SceneConfiguration *sceneConfigurationInstance;
 
     float3 sun_dir;
-    float dni = 0.1f;
-    float csr = 1000.0f;
+    float dni = 1000.0f;
+    float csr = 0.1f;
     int num_sunshape_groups = 128;
     int num_sunshape_lights_per_group = 2048;
     int inverse_transform_sampling_groups = 1024;

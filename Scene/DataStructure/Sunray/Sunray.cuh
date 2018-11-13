@@ -27,25 +27,25 @@ public:
     /*
      * Getters and setters of attributes for Sunray object
      */
-    const float3 &getSunDirection() const;
+    __device__ __host__ const float3 &getSunDirection() const;
     void setSunDirection(float3 sun_dir_);
 
-    float getDNI() const;
+    __device__ __host__ float getDNI() const;
     void setDNI(float dni_);
 
-    float getCSR() const;
+    __device__ __host__ float getCSR() const;
     void setCSR(float csr_);
 
-    int getNumOfSunshapeGroups() const;
+    __device__ __host__ int getNumOfSunshapeGroups() const;
     void setNumOfSunshapeGroups(int num_sunshape_groups_);
 
-    int getNumOfSunshapeLightsPerGroup() const;
+    __device__ __host__ int getNumOfSunshapeLightsPerGroup() const;
     void setNumOfSunshapeLightsPerGroup(int num_sunshape_lights_per_group_);
 
-    float3 *getDeviceSampleLights() const;
+    __device__ __host__ float3 *getDeviceSampleLights() const;
     void setDeviceSampleLights(float3 *d_samplelights_);
 
-    float3 *getDevicePerturbation() const;
+    __device__ __host__ float3 *getDevicePerturbation() const;
     void setDevicePerturbation(float3 *d_perturbation_);
 
 private:

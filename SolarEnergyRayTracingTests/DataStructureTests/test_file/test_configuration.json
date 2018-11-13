@@ -4,11 +4,11 @@
     -1.0,
     0.0
   ],
-  "csr": 1.0,
+  "csr": 0.1,
   "dni": 500.0,
-  "num_of_sunshape_groups": 1,
-  "num_per_sunshape_group": 64,
-  "inverse_transform_sampling_groups": 2048,
+  "num_of_sunshape_groups": 32,
+  "num_per_sunshape_group": 2048,
+  "inverse_transform_sampling_groups": 64,
 
   "receiver_pixel_length": 0.05,
 

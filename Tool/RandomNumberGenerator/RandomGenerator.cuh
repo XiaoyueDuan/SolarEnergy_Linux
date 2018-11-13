@@ -18,6 +18,9 @@ public:
 
     static void initCudaRandGenerator();
 
+    // destroy the cuda random generator
+    static void destroyCudaRandGenerator();
+
     // [0,1]
     static bool cpu_Uniform(float *h_0_1_array, int array_length);
     static bool gpu_Uniform(float *d_0_1_array, int array_length);

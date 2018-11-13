@@ -203,7 +203,7 @@ void SceneLoader::checkScene(SolarScene *solarScene) {
         int belong_receiver_index = grids[i]->getBelongingReceiverIndex();
         if (!i && belong_receiver_index != 0) {
             throw incorresponding_error("grid", i, belong_receiver_index, "receiver", 0, 0);
-        } else {
+        } else if (i) {
             int prev_belong_receiver_index = grids[i - 1]->getBelongingReceiverIndex();
             if (belong_receiver_index != prev_belong_receiver_index &&
                 belong_receiver_index != prev_belong_receiver_index + 1) {
@@ -274,6 +274,7 @@ bool SceneLoader::SceneFileRead(SolarScene *solarScene, std::string filepath) {
         return true;
     } catch (incorresponding_error e) {
         std::cerr << "Error caused by '" << e.what() << "'." << endl;
+        return false;
     } catch (std::runtime_error runtime_error1) {
         std::cerr << "Error occurs at " << std::to_string(receiver_id + 1) << "-th receiver, "
                   << std::to_string(grid_id_for_each_receiver) << "-th grid ,"

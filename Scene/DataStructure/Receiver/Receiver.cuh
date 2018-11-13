@@ -6,15 +6,6 @@
 class Receiver {
 public:
     /*
-     * Whether the light intersect with receiver
-     * Note: sub-class needs to redefine it
-     */
-    __device__ __host__ bool GIntersect(const float3 &orig, const float3 &dir,
-                                        float &t, float &u, float &v) {
-        return true;
-    }
-
-    /*
      * Initialize the parameters
      */
     virtual void CInit(int geometry_info) {}
