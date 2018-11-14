@@ -16,11 +16,12 @@ public:
         localnormal_ = rect_receiver.getLocalNormal();
     }
 
+    // TODO: add tests
     __device__ __host__ bool GIntersect(const float3 &orig, const float3 &dir, float &t, float &u, float &v);
 
     virtual void CInit(int geometry_info);
-    const float3 &getRectVertex(int index) const;
-    const float3 &getLocalNormal() const;
+    float3 getRectVertex(int index) const;
+    float3 getLocalNormal() const;
 
 private:
     void Cinit_vertex();

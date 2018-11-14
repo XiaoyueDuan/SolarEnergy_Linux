@@ -22,7 +22,7 @@ public:
             d_grid_helio_index_ = nullptr;
     }
 
-    const int3 &getGridNumber() const;
+    int3 getGridNumber() const;
     void setGridNumber(int3 grid_num_);
 
     int *getDeviceGridHeliostatMatch() const;

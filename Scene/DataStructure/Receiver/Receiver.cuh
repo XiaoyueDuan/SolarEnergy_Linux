@@ -43,29 +43,29 @@ public:
     int getType() const;
     void setType(int type_);
 
-    const float3 &getNormal() const;
-    void setNormal(float3 normal_);
+    float3 getNormal() const;
+    void setNormal(float3 normal);
 
-    const float3 &getPosition() const;
-    void setPosition(float3 pos_);
+    float3 getPosition() const;
+    void setPosition(float3 pos);
 
-    const float3 &getSize() const;
+    float3 getSize() const;
     void setSize(float3 size_);
 
-    const float3 &getFocusCenter() const;
-    void setFocusCenter(float3 focus_center_);
+    float3 getFocusCenter() const;
+    void setFocusCenter(float3 focus_center);
 
     int getFaceIndex() const;
-    void setFaceIndex(int face_num_);
+    void setFaceIndex(int face_num);
 
     float getPixelLength() const;
-    void setPixelLength(float pixel_length_);
+    void setPixelLength(float pixel_length);
 
     float *getDeviceImage() const;
-    void setDeviceImage(float *d_image_);
+    void setDeviceImage(float *d_image);
 
-    const int2 &getResolution() const;
-    void setResolution(int2 resolution_);
+    int2 getResolution() const;
+    void setResolution(int2 resolution);
 
 protected:
     int type_;

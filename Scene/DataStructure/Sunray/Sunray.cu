@@ -8,7 +8,7 @@
 /*
  * Getters and setters of attributes for Sunray object
  */
-const float3 &Sunray::getSunDirection() const {
+float3 Sunray::getSunDirection() const {
     return sun_dir_;
 }
 

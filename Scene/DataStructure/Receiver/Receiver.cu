@@ -44,7 +44,7 @@ void Receiver::setType(int type) {
     type_ = type;
 }
 
-const float3 &Receiver::getNormal() const {
+float3 Receiver::getNormal() const {
     return normal_;
 }
 
@@ -52,7 +52,7 @@ void Receiver::setNormal(float3 normal) {
     normal_ = normal;
 }
 
-const float3 &Receiver::getPosition() const {
+float3 Receiver::getPosition() const {
     return pos_;
 }
 
@@ -60,7 +60,7 @@ void Receiver::setPosition(float3 pos) {
     pos_ = pos;
 }
 
-const float3 &Receiver::getSize() const {
+float3 Receiver::getSize() const {
     return size_;
 }
 
@@ -68,7 +68,7 @@ void Receiver::setSize(float3 size) {
     size_ = size;
 }
 
-const float3 &Receiver::getFocusCenter() const {
+float3 Receiver::getFocusCenter() const {
     return focus_center_;
 }
 
@@ -100,7 +100,7 @@ void Receiver::setDeviceImage(float *d_image) {
     d_image_ = d_image;
 }
 
-const int2 &Receiver::getResolution() const {
+int2 Receiver::getResolution() const {
     return resolution_;
 }
 

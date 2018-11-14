@@ -27,7 +27,7 @@ public:
     /*
      * Getters and setters of attributes for Sunray object
      */
-    __device__ __host__ const float3 &getSunDirection() const;
+    __device__ __host__ float3 getSunDirection() const;
     void setSunDirection(float3 sun_dir_);
 
     __device__ __host__ float getDNI() const;

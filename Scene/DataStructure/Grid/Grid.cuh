@@ -22,13 +22,13 @@ public:
     int getGridType() const;
     void setGridType(int type_);
 
-    const float3 &getPosition() const;
+    float3 getPosition() const;
     void setPosition(float3 pos_);
 
-    const float3 &getSize() const;
+    float3 getSize() const;
     void setSize(float3 size_);
 
-    const float3 &getInterval() const;
+    float3 getInterval() const;
     void setInterval(float3 interval_);
 
     int getHeliostatType() const;

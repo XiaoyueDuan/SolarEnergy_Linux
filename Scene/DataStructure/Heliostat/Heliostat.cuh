@@ -17,19 +17,19 @@ public:
     virtual void
     CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals) = 0;
 
-    const float3 &getPosition() const;
+    float3 getPosition() const;
     void setPosition(float3 pos_);
 
-    const float3 &getSize() const;
+    float3 getSize() const;
     void setSize(float3 size_);
 
-    const float3 &getNormal() const;
+    float3 getNormal() const;
     void setNormal(float3 normal_);
 
-    const int2 &getRowAndColumn() const;
+    int2 getRowAndColumn() const;
     void setRowAndColumn(int2 row_col_);
 
-    const float2 &getGap() const;
+    float2 getGap() const;
     void setGap(float2 gap_);
 
     SubCenterType getSubCenterType() const;

@@ -40,8 +40,8 @@ int boxIntersect(int mirrowId,
     for (int x = min_grid_pos.x; x <= max_grid_pos.x; ++x) {
         for (int y = min_grid_pos.y; y <= max_grid_pos.y; ++y) {
             for (int z = min_grid_pos.z; z <= max_grid_pos.z; ++z) {
-                int pos = x * grid_num.y * grid_num.z + y * grid_num.z + z;
-                grid_mirrow_match_vector[pos].push_back(mirrowId);
+                int pos_id = x * grid_num.y * grid_num.z + y * grid_num.z + z;
+                grid_mirrow_match_vector[pos_id].push_back(mirrowId);
                 ++size;
             }
         }
@@ -59,9 +59,8 @@ void RectGrid::CGridHelioMatch(
 
     vector<vector<int> > grid_mirrow_match_vector(grid_num_.x * grid_num_.y * grid_num_.z, vector<int>());
     for (int i = start_helio_pos_; i < start_helio_pos_ + num_helios_; ++i) {
-        float3 size = h_helios[i]->getSize();
         float3 pos = h_helios[i]->getPosition();
-        radius = length(size) / 2;
+        radius = length(h_helios[i]->getSize()) / 2;
 
         minPos = pos - radius;
         maxPos = pos + radius;
@@ -93,7 +92,7 @@ void RectGrid::CGridHelioMatch(
  * Getter and setter of attributes for RectGrid
  */
 
-const int3 &RectGrid::getGridNumber() const {
+int3 RectGrid::getGridNumber() const {
     return grid_num_;
 }
 

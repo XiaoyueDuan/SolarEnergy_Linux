@@ -18,7 +18,7 @@ void RectangleReceiver::CInit(int geometry_info) {
     Cclean_image_content();
 }
 
-const float3 &RectangleReceiver::getRectVertex(int index) const {
+float3 RectangleReceiver::getRectVertex(int index) const {
     if(index>=4) {
         throw std::runtime_error("The index should between [0,3].");
     }
@@ -103,6 +103,6 @@ void RectangleReceiver::Cset_vertex() {
     rect_vertex_[3] = global_func::transform(rect_vertex_[3], pos_);
 }
 
-const float3 &RectangleReceiver::getLocalNormal() const {
+float3 RectangleReceiver::getLocalNormal() const {
     return localnormal_;
 }
