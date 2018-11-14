@@ -6,9 +6,13 @@
 class RectangleHelio : public Heliostat {
 public:
     RectangleHelio() {}
+
+    virtual int getSubHelioSize() {
+        return sub_helio_size;
+    }
+
     // TODO: add tests
     virtual void CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals) {
-
     }
 };
 

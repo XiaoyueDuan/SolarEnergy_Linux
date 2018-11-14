@@ -20,7 +20,8 @@ void RectGrid::CClear() {
     }
 }
 
-int boxIntersect(int mirrowId,
+int boxIntersect(int mirrorBeiginId,
+                 int subMirrorSize,
                  float3 min_pos,
                  float3 max_pos,
                  const RectGrid &grid,
@@ -41,8 +42,10 @@ int boxIntersect(int mirrowId,
         for (int y = min_grid_pos.y; y <= max_grid_pos.y; ++y) {
             for (int z = min_grid_pos.z; z <= max_grid_pos.z; ++z) {
                 int pos_id = x * grid_num.y * grid_num.z + y * grid_num.z + z;
-                grid_mirrow_match_vector[pos_id].push_back(mirrowId);
-                ++size;
+                for (int i = 0; i < subMirrorSize; ++i) {
+                    grid_mirrow_match_vector[pos_id].push_back(mirrorBeiginId + i);
+                }
+                size += subMirrorSize;
             }
         }
     }
@@ -50,9 +53,15 @@ int boxIntersect(int mirrowId,
     return size;
 }
 
-void RectGrid::CGridHelioMatch(
-        const vector<Heliostat *> &h_helios) // set *d_grid_helio_match_, *d_grid_helio_index_ and num_grid_helio_match_
+int RectGrid::CGridHelioMatch(
+        const vector<Heliostat *> &h_helios,
+        int start_subhelio_pos) // set *d_grid_helio_match_, *d_grid_helio_index_ and num_grid_helio_match_
 {
+    if (d_grid_helio_match_ || d_grid_helio_index_) {
+        throw std::runtime_error(
+                "The grid and heliostats corresponding relationship should be empty before calling this method");
+    }
+
     float3 minPos, maxPos;
     float radius = 0.0f;
     num_grid_helio_match_ = 0;
@@ -65,7 +74,9 @@ void RectGrid::CGridHelioMatch(
         minPos = pos - radius;
         maxPos = pos + radius;
 
-        num_grid_helio_match_ += boxIntersect(i, minPos, maxPos, *this, grid_mirrow_match_vector);
+        num_grid_helio_match_ += boxIntersect(start_subhelio_pos, h_helios[i]->getSubHelioSize(),
+                                              minPos, maxPos, *this, grid_mirrow_match_vector);
+        start_subhelio_pos += h_helios[i]->getSubHelioSize();
     }
 
     int *h_grid_helio_index = new int[grid_num_.x * grid_num_.y * grid_num_.z + 1];
@@ -86,6 +97,8 @@ void RectGrid::CGridHelioMatch(
     delete[] h_grid_helio_match;
     h_grid_helio_index = nullptr;
     h_grid_helio_match = nullptr;
+
+    return start_subhelio_pos;
 }
 
 /**

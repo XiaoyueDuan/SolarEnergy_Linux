@@ -10,12 +10,18 @@ enum SubCenterType {
 
 class Heliostat {
 public:
-    Heliostat() : subCenterType_(Square) {}
+    Heliostat() : subCenterType_(Square), sub_helio_size(1) {}
 
     virtual void CSetNormalAndRotate(const float3 &focus_center, const float3 &sunray_dir);
-
     virtual void
     CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals) = 0;
+    virtual int getSubHelioSize() = 0;
+    /**
+     * Only for test. Never use 'setSubHelioSize' standalone
+     * */
+    virtual void setSubHelioSize(int n) {
+        sub_helio_size = n;
+    }
 
     float3 getPosition() const;
     void setPosition(float3 pos_);
@@ -49,6 +55,7 @@ protected:
     float2 gap_;            // The gap between mirrors
     SubCenterType subCenterType_;
     float pixel_length_;
+    int sub_helio_size;
 
 private:
     void CSetWorldVertex();

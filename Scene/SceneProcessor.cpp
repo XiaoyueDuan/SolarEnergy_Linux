@@ -20,10 +20,11 @@ bool SceneProcessor::setGridReceiverHeliostatContent(std::vector<Grid *> &grids,
     int pixels_per_meter_for_receiver = int(1.0f / sceneConfiguration->getReceiver_pixel_length());
     float heliostat_pixel_length = sceneConfiguration->getHelio_pixel_length();
     float3 sun_direction = sceneConfiguration->getSun_dir();
+    int start_subhelio_pos = 0;
 
     for (Grid *grid : grids) {
         grid->Cinit();
-        grid->CGridHelioMatch(heliostats);
+        start_subhelio_pos = grid->CGridHelioMatch(heliostats, start_subhelio_pos);
 
         Receiver *receiver = receivers[grid->getBelongingReceiverIndex()];
         receiver->CInit(pixels_per_meter_for_receiver);

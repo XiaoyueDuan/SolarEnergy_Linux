@@ -59,5 +59,5 @@ TEST(loadConfiguration, badExampleWithNonExistConfigurationFile) {
     std::string configuration_path = "test_file/nonexist_file.json";
 
     printf("Bad Example with Non-exist Configuration File:");
-    EXPECT_EQ(-1, sceneConfiguration->loadConfiguration(configuration_path));
+    EXPECT_ANY_THROW(sceneConfiguration->loadConfiguration(configuration_path));
 }

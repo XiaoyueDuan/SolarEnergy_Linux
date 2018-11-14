@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <iostream>
 
 #include "nlohmann/json.hpp"
 #include "SceneConfiguration.h"
@@ -42,8 +43,9 @@ int set_3field(T &field, std::string field_json_format, nlohmann::json &json) {
 int SceneConfiguration::loadConfiguration(std::string configuration_file_path) {
     std::ifstream inputJsonFile(configuration_file_path);
     if (inputJsonFile.fail()) {
-        printf("The file '%s' does not exist", configuration_file_path.c_str());
-        return -1;
+        std::string error_message = "The file '" + configuration_file_path + "' does not exist";
+        std::cerr << error_message << std::endl;
+        throw std::runtime_error(error_message);
     }
     nlohmann::json json;
     /**
