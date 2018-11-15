@@ -10,7 +10,7 @@
 #include "RectGrid.cuh"
 #include "RectangleHelio.cuh"
 
-class RectGridFixture:public ::testing::Test {
+class RectGridFixture : public ::testing::Test {
 protected:
     void SetUp() {
         /**
@@ -66,7 +66,7 @@ protected:
     }
 
 public:
-    RectGridFixture():h1(nullptr),h2(nullptr),h3(nullptr),h4(nullptr),h5(nullptr){}
+    RectGridFixture() : h1(nullptr), h2(nullptr), h3(nullptr), h4(nullptr), h5(nullptr) {}
 
     vector<int> convert2vector(int *array, int size) {
         vector<int> ans;
@@ -108,11 +108,11 @@ TEST_F(RectGridFixture, CGridHelioMatchGoodExample2) {
     /**
      * The scene is similar in test_file/test_rectgrid.scn
      * */
-    h1->setSubHelioSize(1);
-    h2->setSubHelioSize(2);
-    h3->setSubHelioSize(3);
-    h4->setSubHelioSize(4);
-    h5->setSubHelioSize(5);
+    h1->setNumberOfSubHelio(1);
+    h2->setNumberOfSubHelio(2);
+    h3->setNumberOfSubHelio(3);
+    h4->setNumberOfSubHelio(4);
+    h5->setNumberOfSubHelio(5);
 
     // test function
     rectGrid.CGridHelioMatch(heliostats, 0);

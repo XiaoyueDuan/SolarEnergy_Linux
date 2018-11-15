@@ -1,10 +1,18 @@
 #include "Heliostat.cuh"
 #include "vector_arithmetic.cuh"
 #include "global_function.cuh"
+#include "RandomNumberGenerator/RandomGenerator.cuh"
 
 void Heliostat::CSetNormalAndRotate(const float3 &focus_center, const float3 &sunray_dir) {
     CSetNormal(focus_center, sunray_dir);
     CSetWorldVertex();
+}
+
+int* Heliostat::generateDeviceMicrohelioGroup(int num_group, int size) {
+    int *d_groups = nullptr;
+    checkCudaErrors(cudaMalloc((void **)&d_groups, sizeof(int)*size));
+    RandomGenerator::gpu_Uniform(d_groups, 0, num_group, size);
+    return d_groups;
 }
 
 float3 Heliostat::getPosition() const {

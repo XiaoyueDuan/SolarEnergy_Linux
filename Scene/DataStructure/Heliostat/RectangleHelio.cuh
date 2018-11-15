@@ -11,9 +11,7 @@ public:
         return sub_helio_size;
     }
 
-    // TODO: add tests
-    virtual void CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals) {
-    }
+    virtual int CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals);
 };
 
 #endif //SOLARENERGYRAYTRACING_RECTANGLEHELIO_CUH

@@ -13,15 +13,17 @@ public:
     Heliostat() : subCenterType_(Square), sub_helio_size(1) {}
 
     virtual void CSetNormalAndRotate(const float3 &focus_center, const float3 &sunray_dir);
-    virtual void
+    virtual int
     CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals) = 0;
     virtual int getSubHelioSize() = 0;
     /**
      * Only for test. Never use 'setSubHelioSize' standalone
      * */
-    virtual void setSubHelioSize(int n) {
+    virtual void setNumberOfSubHelio(int n) {
         sub_helio_size = n;
     }
+
+    int* generateDeviceMicrohelioGroup(int num_group, int size);
 
     float3 getPosition() const;
     void setPosition(float3 pos_);
