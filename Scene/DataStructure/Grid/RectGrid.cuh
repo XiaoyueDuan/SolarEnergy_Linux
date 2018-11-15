@@ -7,8 +7,7 @@ using namespace std;
 
 class RectGrid : public Grid {
 public:
-    virtual int CGridHelioMatch(const vector<Heliostat *> &h_helios,
-                                int start_subhelio_pos);            // set *d_grid_helio_match_, *d_grid_helio_index_ and num_grid_helio_match_
+    virtual int CGridHelioMatch(const vector<Heliostat *> &h_helios);   // set *d_grid_helio_match_, *d_grid_helio_index_ and num_grid_helio_match_
     virtual void CClear();
 
     virtual void Cinit();

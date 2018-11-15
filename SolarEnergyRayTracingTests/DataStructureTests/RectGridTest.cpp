@@ -83,7 +83,7 @@ public:
 
 TEST_F(RectGridFixture, CGridHelioMatchGoodExample1) {
     // test function
-    rectGrid.CGridHelioMatch(heliostats, 0);
+    rectGrid.CGridHelioMatch(heliostats);
 
     // check the result as our expect
     int *h_grid_helio_match = nullptr;
@@ -115,7 +115,7 @@ TEST_F(RectGridFixture, CGridHelioMatchGoodExample2) {
     h5->setNumberOfSubHelio(5);
 
     // test function
-    rectGrid.CGridHelioMatch(heliostats, 0);
+    rectGrid.CGridHelioMatch(heliostats);
 
     // check the result as our expect
     int *h_grid_helio_match = nullptr;

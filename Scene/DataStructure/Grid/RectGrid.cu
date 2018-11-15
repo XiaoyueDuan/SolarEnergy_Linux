@@ -54,14 +54,14 @@ int boxIntersect(int mirrorBeiginId,
 }
 
 int RectGrid::CGridHelioMatch(
-        const vector<Heliostat *> &h_helios,
-        int start_subhelio_pos) // set *d_grid_helio_match_, *d_grid_helio_index_ and num_grid_helio_match_
+        const vector<Heliostat *> &h_helios) // set *d_grid_helio_match_, *d_grid_helio_index_ and num_grid_helio_match_
 {
     if (d_grid_helio_match_ || d_grid_helio_index_) {
         throw std::runtime_error(
                 "The grid and heliostats corresponding relationship should be empty before calling this method");
     }
 
+    int start_subhelio_pos = 0;
     float3 minPos, maxPos;
     float radius = 0.0f;
     num_grid_helio_match_ = 0;

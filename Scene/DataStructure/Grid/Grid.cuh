@@ -15,7 +15,7 @@ class Grid
 public:
     __device__ __host__ Grid(){}
     // set *d_grid_helio_match_, *d_grid_helio_index_ and num_grid_helio_match_
-    virtual int CGridHelioMatch(const vector<Heliostat *> &h_helios, int start_subhelio_pos) = 0;
+    virtual int CGridHelioMatch(const vector<Heliostat *> &h_helios) = 0;
     virtual void CClear() = 0;
     virtual void Cinit() = 0;
 
