@@ -10,6 +10,7 @@ public:
     virtual int getSubHelioSize() {
         return sub_helio_size;
     }
+    virtual void setSize(float3 size);
 
     virtual int CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals);
 };

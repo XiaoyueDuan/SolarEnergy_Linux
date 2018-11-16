@@ -1,6 +1,10 @@
 #include "RectangleHelio.cuh"
 #include "global_function.cuh"
 
+void RectangleHelio::setSize(float3 size) {
+    size_ = size;
+}
+
 namespace rectange_heliostat {
     // Step 1: Generate local micro-heliostats' centers
     __global__ void map_microhelio_centers(float3 *d_microhelio_centers, float3 helio_size,

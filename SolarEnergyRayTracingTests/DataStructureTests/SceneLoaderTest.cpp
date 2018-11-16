@@ -13,11 +13,11 @@ protected:
     }
 
     void TearDown() {
-        delete(sceneLoader);
+        delete (sceneLoader);
     }
 
 public:
-    SceneLoaderFixture():solarScene(nullptr){}
+    SceneLoaderFixture() : solarScene(nullptr) {}
 
     SolarScene *solarScene;
     SceneLoader *sceneLoader;

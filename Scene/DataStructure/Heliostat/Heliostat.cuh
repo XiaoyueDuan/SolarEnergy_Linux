@@ -29,7 +29,7 @@ public:
     void setPosition(float3 pos_);
 
     float3 getSize() const;
-    void setSize(float3 size_);
+    virtual void setSize(float3 size_) = 0;
 
     float3 getNormal() const;
     void setNormal(float3 normal_);
@@ -46,6 +46,9 @@ public:
     float getPixelLength() const;
     void setPixelLength(float pixel_length_);
 
+    int getBelongingGridId() const;
+    void setBelongingGridId(int belonging_grid_id_);
+
     void Cget_vertex(float3 &v0, float3 &v1, float3 &v3);
 
 protected:
@@ -58,6 +61,7 @@ protected:
     SubCenterType subCenterType_;
     float pixel_length_;
     int sub_helio_size;
+    int belonging_grid_id_;
 
 private:
     void CSetWorldVertex();

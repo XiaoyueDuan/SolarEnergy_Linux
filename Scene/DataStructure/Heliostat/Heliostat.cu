@@ -27,10 +27,6 @@ float3 Heliostat::getSize() const {
     return size_;
 }
 
-void Heliostat::setSize(float3 size) {
-    size_ = size;
-}
-
 float3 Heliostat::getNormal() const {
     return normal_;
 }
@@ -69,6 +65,14 @@ float Heliostat::getPixelLength() const {
 
 void Heliostat::setPixelLength(float pixel_length) {
     pixel_length_ = pixel_length;
+}
+
+int Heliostat::getBelongingGridId() const {
+    return belonging_grid_id_;
+}
+
+void Heliostat::setBelongingGridId(int belonging_grid_id) {
+    belonging_grid_id_ = belonging_grid_id;
 }
 
 void Heliostat::Cget_vertex(float3 &v0, float3 &v1, float3 &v3) {

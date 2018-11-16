@@ -170,6 +170,7 @@ void SceneLoader::add_heliostat(SolarScene *solarScene, std::istream &stringstre
     stringstream >> size.x >> size.y >> size.z;
     heliostat->setPosition(position);
     heliostat->setSize(size);
+    heliostat->setBelongingGridId(solarScene->getGrid0s().size() - 1);
 
     solarScene->addHeliostat(heliostat);
 }
