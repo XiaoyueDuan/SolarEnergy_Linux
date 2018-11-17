@@ -14,6 +14,9 @@ add_subdirectory(Tool/FileLoader)
 # Data Structure
 add_subdirectory(Scene)
 
+# Ray Tracing
+add_subdirectory(QuasiMonteCarloRayTracing)
+
 # Tests
 set(GOOGLE_TEST_PATH SolarEnergyRayTracingTests)
 add_subdirectory(${GOOGLE_TEST_PATH})
