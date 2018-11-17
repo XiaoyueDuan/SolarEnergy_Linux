@@ -13,6 +13,7 @@ public:
     virtual void setSize(float3 size);
 
     virtual int CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals);
+    virtual void CGetSubHeliostatVertexes(std::vector<float3> &);
 };
 
 #endif //SOLARENERGYRAYTRACING_RECTANGLEHELIO_CUH

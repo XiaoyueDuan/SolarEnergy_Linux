@@ -65,8 +65,8 @@ int SceneConfiguration::loadConfiguration(std::string configuration_file_path) {
     ans += set_field(receiver_pixel_length, "receiver_pixel_length", json);
 
     ans += set_field(disturb_std, "helio_disturb_std", json);
-    ans += set_field(helio_pixel_length, "helio_reflected_rate", json);
-    ans += set_field(reflected_rate, "helio_pixel_length", json);
+    ans += set_field(helio_pixel_length, "helio_pixel_length", json);
+    ans += set_field(reflected_rate, "helio_reflected_rate", json);
 
     if (ans != num_of_fields) {
         printf("Noted: not all fields are set. You may need to check your configuration file.\n");

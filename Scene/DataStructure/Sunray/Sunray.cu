@@ -64,6 +64,14 @@ void Sunray::setDevicePerturbation(float3 *d_perturbation) {
     d_perturbation_ = d_perturbation;
 }
 
+float Sunray::getReflectiveRate() const {
+    return reflective_rate_;
+}
+
+void Sunray::setReflectiveRate(float reflective_rate) {
+    reflective_rate_ = reflective_rate;
+}
+
 Sunray::~Sunray() {
     if(d_samplelights_)
         d_samplelights_ = nullptr;

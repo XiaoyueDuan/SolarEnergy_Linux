@@ -75,12 +75,6 @@ void Heliostat::setBelongingGridId(int belonging_grid_id) {
     belonging_grid_id_ = belonging_grid_id;
 }
 
-void Heliostat::Cget_vertex(float3 &v0, float3 &v1, float3 &v3) {
-    v0 = vertex_[0];
-    v1 = vertex_[1];
-    v3 = vertex_[3];
-}
-
 void Heliostat::CSetWorldVertex() {
     vertex_[0] = make_float3(-size_.x / 2, size_.y / 2, -size_.z / 2);
     vertex_[1] = vertex_[0] + make_float3(0, 0, size_.z);

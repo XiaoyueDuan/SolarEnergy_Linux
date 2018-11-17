@@ -2,6 +2,7 @@
 #define SOLARENERGYRAYTRACING_HELIOSTAT_CUH
 
 #include <cuda_runtime.h>
+#include <vector>
 
 enum SubCenterType {
     Square,
@@ -22,6 +23,8 @@ public:
     virtual void setNumberOfSubHelio(int n) {
         sub_helio_size = n;
     }
+
+    virtual void CGetSubHeliostatVertexes(std::vector<float3> &SubHeliostatVertexes) = 0;
 
     int* generateDeviceMicrohelioGroup(int num_group, int size);
 
@@ -49,7 +52,6 @@ public:
     int getBelongingGridId() const;
     void setBelongingGridId(int belonging_grid_id_);
 
-    void Cget_vertex(float3 &v0, float3 &v1, float3 &v3);
 
 protected:
     float3 pos_;

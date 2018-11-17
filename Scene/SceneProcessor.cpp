@@ -48,6 +48,7 @@ bool SceneProcessor::set_sunray_content(Sunray &sunray) {
     sunray.setDNI(sceneConfiguration->getDni());
     sunray.setNumOfSunshapeGroups(sceneConfiguration->getNum_sunshape_groups());
     sunray.setNumOfSunshapeLightsPerGroup(sceneConfiguration->getNum_sunshape_lights_per_group());
+    sunray.setReflectiveRate(sceneConfiguration->getReflected_rate());
 
     return set_perturbation(sunray) && set_samplelights(sunray);
 }

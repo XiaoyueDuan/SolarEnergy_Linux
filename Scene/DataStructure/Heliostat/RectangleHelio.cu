@@ -80,3 +80,9 @@ RectangleHelio::CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_ve
 
     return map_size;
 }
+
+void RectangleHelio::CGetSubHeliostatVertexes(std::vector<float3> &subHeliostatVertexes) {
+    subHeliostatVertexes.push_back(vertex_[0]);
+    subHeliostatVertexes.push_back(vertex_[1]);
+    subHeliostatVertexes.push_back(vertex_[2]);
+}
