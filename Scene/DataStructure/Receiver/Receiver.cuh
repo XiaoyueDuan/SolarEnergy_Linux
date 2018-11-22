@@ -61,10 +61,14 @@ public:
     float getPixelLength() const;
     void setPixelLength(float pixel_length);
 
-    float *getDeviceImage() const;
+    __host__ __device__ float *getDeviceImage() const {
+        return d_image_;
+    }
     void setDeviceImage(float *d_image);
 
-    int2 getResolution() const;
+    __host__ __device__ int2 getResolution() const {
+        return resolution_;
+    }
     void setResolution(int2 resolution);
 
 protected:

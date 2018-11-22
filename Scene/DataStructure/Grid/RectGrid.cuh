@@ -21,13 +21,19 @@ public:
             d_grid_helio_index_ = nullptr;
     }
 
-    int3 getGridNumber() const;
+    __host__ __device__ int3 getGridNumber() const {
+        return grid_num_;
+    }
     void setGridNumber(int3 grid_num_);
 
-    int *getDeviceGridHeliostatMatch() const;
+    __host__ __device__ int *getDeviceGridHeliostatMatch() const {
+        return d_grid_helio_match_;
+    }
     void setDeviceGridHeliostatMatch(int *d_grid_helio_match_);
 
-    int *getDeviceGridHelioIndex() const;
+    __host__ __device__ int *getDeviceGridHelioIndex() const {
+        return d_grid_helio_index_;
+    }
     void setDeviceGridHelioIndex(int *d_grid_helio_index_);
 
     size_t getNumberOfGridHeliostatMatch() const;

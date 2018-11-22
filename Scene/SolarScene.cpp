@@ -19,10 +19,14 @@ SolarScene::SolarScene():loaded_from_file(false), sunray(nullptr) {
     //init the random
     RandomGenerator::initSeed();
     RandomGenerator::initCudaRandGenerator();
+
+    // Allocate sunray
+    sunray = new Sunray();
 }
 
 SolarScene::~SolarScene() {
     clear();
+    m_instance = nullptr;
 }
 
 bool SolarScene::clear() {

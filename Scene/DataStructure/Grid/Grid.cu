@@ -8,10 +8,6 @@ void Grid::setGridType(int type) {
     type_ = type;
 }
 
-float3 Grid::getPosition() const {
-    return pos_;
-}
-
 void Grid::setPosition(float3 pos) {
     pos_ = pos;
 }
@@ -22,10 +18,6 @@ float3 Grid::getSize() const {
 
 void Grid::setSize(float3 size) {
     size_ = size;
-}
-
-float3 Grid::getInterval() const {
-    return interval_;
 }
 
 void Grid::setInterval(float3 interval) {

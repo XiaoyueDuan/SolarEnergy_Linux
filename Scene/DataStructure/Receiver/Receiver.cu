@@ -92,16 +92,8 @@ void Receiver::setPixelLength(float pixel_length) {
     pixel_length_ = pixel_length;
 }
 
-float *Receiver::getDeviceImage() const {
-    return d_image_;
-}
-
 void Receiver::setDeviceImage(float *d_image) {
     d_image_ = d_image;
-}
-
-int2 Receiver::getResolution() const {
-    return resolution_;
 }
 
 void Receiver::setResolution(int2 resolution) {

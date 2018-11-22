@@ -1,12 +1,5 @@
 #include "RectangleReceiver.cuh"
-#include "global_function.cuh"
 #include <stdexcept>
-
-bool RectangleReceiver::GIntersect(const float3 &orig, const float3 &dir,
-                                   float &t, float &u, float &v) {
-    return global_func::rayParallelogramIntersect(orig, dir,
-                                                  rect_vertex_[0], rect_vertex_[1], rect_vertex_[3], t, u, v);
-}
 
 // RectangleReceiver
 void RectangleReceiver::CInit(int geometry_info) {
