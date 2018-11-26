@@ -15,6 +15,6 @@ __device__ void rectangleReceiverIntersect::receiver_drawing(RectangleReceiver &
     // Intersect location
     int2 row_col = make_int2(u * rectangleReceiver.getResolution().y, v * rectangleReceiver.getResolution().x);
     int address = row_col.x * rectangleReceiver.getResolution().x + row_col.y;  //col_row.y + col_row.x*resolution.y;
-    float* image = rectangleReceiver.getDeviceImage();
+    float *image = rectangleReceiver.getDeviceImage();
     atomicAdd(&(image[address]), energy);
 }
