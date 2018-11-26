@@ -65,7 +65,7 @@ public:
         return ans;
     }
 
-    QMCRTracerTestFixture() : solarScene(nullptr){}
+    QMCRTracerTestFixture() : solarScene(nullptr) {}
 
     QuasiMonteCarloRayTracer QMCRTracer;
 
@@ -99,18 +99,34 @@ TEST_F(QMCRTracerTestFixture, setFlatRectangleHeliostatVertexes) {
     std::vector<float3> subHelioVertexes = deviceArray2vector(d_heliostat_vertexes, heliostatVertexesSize);
 
     std::vector<float3> expectSubHelioVertexes = std::vector<float3>({
-        // heliostat1
-        make_float3(2.0f, 1.5f, 7.85f), make_float3(2.0f, -1.5f, 7.85f), make_float3(-2.0f, -1.5f, 7.85f),
-        // heliostat2
-        make_float3(2.5f, -1.0f, 11.95f), make_float3(2.5f, -2.0f, 11.95f), make_float3(0.5f, -2.0f, 11.95f),
-        make_float3(-0.5f, -1.0f, 11.95f), make_float3(-0.5f, -2.0f, 11.95f), make_float3(-2.5f, -2.0f, 11.95f),
-        make_float3(2.5f, 0.5f, 11.95f), make_float3(2.5f, -0.5f, 11.95f), make_float3(0.5f, -0.5f, 11.95f),
-        make_float3(-0.5f, 0.5f, 11.95f), make_float3(-0.5f, -0.5f, 11.95f), make_float3(-2.5f, -0.5f, 11.95f),
-        make_float3(2.5f, 2.0f, 11.95f), make_float3(2.5f, 1.0f, 11.95f), make_float3(0.5f, 1.0f, 11.95f),
-        make_float3(-0.5f, 2.0f, 11.95f), make_float3(-0.5f, 1.0f, 11.95f), make_float3(-2.5f, 1.0f, 11.95f),
-        // heliostat3
-        make_float3(-3.40423f, 2.09987f, 20.1253f), make_float3(-3.40541f, -1.90012f, 20.135f),
-        make_float3(-6.38378f, -1.90012f, 19.7754f)});
+                                                                             // heliostat1
+                                                                             make_float3(2.0f, 1.5f, 7.85f),
+                                                                             make_float3(2.0f, -1.5f, 7.85f),
+                                                                             make_float3(-2.0f, -1.5f, 7.85f),
+                                                                             // heliostat2
+                                                                             make_float3(2.5f, -1.0f, 11.95f),
+                                                                             make_float3(2.5f, -2.0f, 11.95f),
+                                                                             make_float3(0.5f, -2.0f, 11.95f),
+                                                                             make_float3(-0.5f, -1.0f, 11.95f),
+                                                                             make_float3(-0.5f, -2.0f, 11.95f),
+                                                                             make_float3(-2.5f, -2.0f, 11.95f),
+                                                                             make_float3(2.5f, 0.5f, 11.95f),
+                                                                             make_float3(2.5f, -0.5f, 11.95f),
+                                                                             make_float3(0.5f, -0.5f, 11.95f),
+                                                                             make_float3(-0.5f, 0.5f, 11.95f),
+                                                                             make_float3(-0.5f, -0.5f, 11.95f),
+                                                                             make_float3(-2.5f, -0.5f, 11.95f),
+                                                                             make_float3(2.5f, 2.0f, 11.95f),
+                                                                             make_float3(2.5f, 1.0f, 11.95f),
+                                                                             make_float3(0.5f, 1.0f, 11.95f),
+                                                                             make_float3(-0.5f, 2.0f, 11.95f),
+                                                                             make_float3(-0.5f, 1.0f, 11.95f),
+                                                                             make_float3(-2.5f, 1.0f, 11.95f),
+                                                                             // heliostat3
+                                                                             make_float3(-3.40423f, 2.09987f, 20.1253f),
+                                                                             make_float3(-3.40541f, -1.90012f, 20.135f),
+                                                                             make_float3(-6.38378f, -1.90012f,
+                                                                                         19.7754f)});
 
     EXPECT_THAT(expectSubHelioVertexes, ::testing::Pointwise(FloatNearPointwise(1e-3), subHelioVertexes));
 }
@@ -141,7 +157,7 @@ TEST_F(QMCRTracerTestFixture, generateHeliostatArgument) {
     global_func::gpu2cpu(h_microhelio_belonging_groups, heliostatArgument.d_microHelio_groups,
                          heliostatArgument.numberOfMicroHeliostats);
 
-    std::cout <<"The starting position of each micro-heliostats are following:"<< std::endl;
+    std::cout << "The starting position of each micro-heliostats are following:" << std::endl;
     for (int i = 0; i < heliostatArgument.numberOfMicroHeliostats; ++i) {
         std::cout << h_microhelio_belonging_groups[i] << " ";
     }
@@ -170,9 +186,32 @@ TEST_F(QMCRTracerTestFixture, generateSunrayArgument) {
     }
 
     // 2. Check perturbation lights
-    std::vector<float3> sunray_perturbations = deviceArray2vector(sunrayArgument.d_perturbations, min(10, sunrayArgument.pool_size));
+    std::vector<float3> sunray_perturbations = deviceArray2vector(sunrayArgument.d_perturbations,
+                                                                  min(10, sunrayArgument.pool_size));
     std::cout << "\nThe sunray perturbations directions\n";
     for (auto it:sunray_perturbations) {
         std::cout << "(" << it.x << ", " << it.y << ", " << it.z << ")" << std::endl;
+    }
+}
+
+TEST_F(QMCRTracerTestFixture, rayTracing) {
+    QMCRTracer.rayTracing(solarScene, 0);
+
+    float *h_array = nullptr;
+    Receiver *receiver = solarScene->getReceivers()[0];
+    float *d_array = receiver->getDeviceImage();
+    int2 resolution = receiver->getResolution();
+    global_func::gpu2cpu(h_array, d_array, resolution.x * resolution.y);
+
+    for (int r = 0; r < resolution.y; ++r) {
+        std::cout << std::endl;
+        for (int c = 0; c < resolution.x; ++c) {
+//            if (h_array[r * resolution.x + c] > 0) {
+//                std::cout << 1 << ' ';
+//            } else {
+//                std::cout << 0 << ' ';
+//            }
+            std::cout<<h_array[r*resolution.x+c]<<'\t';
+        }
     }
 }
