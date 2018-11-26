@@ -27,8 +27,10 @@ include_directories("${CMAKE_SOURCE_DIR}/Tool/ArgumentParser")
 target_link_libraries(ToolTests argumentParser)
 
 include_directories("${CMAKE_SOURCE_DIR}/Tool/RandomNumberGenerator")
-#add_subdirectory(${CMAKE_SOURCE_DIR}/Tool/RandomNumberGenerator ${CMAKE_BINARY_DIR}/RandomNumberGenerator)
 target_link_libraries(ToolTests randomGenerator)
+
+include_directories("${CMAKE_SOURCE_DIR}/Tool/ImageSaver")
+target_link_libraries(ToolTests image_saver)
 
 include_directories("${CMAKE_SOURCE_DIR}/Tool/FileLoader")
 target_link_libraries(ToolTests regularExpressionTree)

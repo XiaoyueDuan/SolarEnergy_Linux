@@ -9,3 +9,7 @@ cmake-build-debug/
 # Third-party files
 SolarEnergyRayTracingTests/lib
 Scene/json-develop
+
+# Output
+SolarEnergyRayTracingTests/ToolTests/test_output
+
