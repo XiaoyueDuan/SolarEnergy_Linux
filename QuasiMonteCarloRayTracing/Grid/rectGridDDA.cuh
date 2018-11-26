@@ -18,6 +18,14 @@ namespace rectGridDDA {
         return abs(float(current_index + (dir >= 0)) * interval - current_pos);
     }
 
+    inline __host__ __device__ bool equal(float n1, float n2) {
+        return (n1 < n2 + Epsilon) && (n1 > n2 - Epsilon);
+    }
+
+    inline __host__ __device__ bool less(float n1, float n2) {
+        return n1 < n2 - Epsilon;
+    }
+
     /**
      * Intersect with the heliostat within this rectangle grid
      * */

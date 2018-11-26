@@ -32,16 +32,16 @@ struct HeliostatArgument {
     float3 *d_microHelio_normals;
     int *d_microHelio_groups;
     int numberOfMicroHeliostats;
-    int heliostat_id;
+    int subHeliostat_id;
     int numberOfSubHeliostats;
 
     HeliostatArgument() : d_microHelio_origins(nullptr), d_microHelio_normals(nullptr), d_microHelio_groups(nullptr),
-                          numberOfMicroHeliostats(0), heliostat_id(0), numberOfSubHeliostats(0) {}
+                          numberOfMicroHeliostats(0), subHeliostat_id(0), numberOfSubHeliostats(0) {}
 
     HeliostatArgument
-            (float3 *origins, float3 *normals, int *groups, int microHelioSize, int helio_id, int subHelioSize) :
+            (float3 *origins, float3 *normals, int *groups, int microHelioSize, int subhelio_id, int subHelioSize) :
             d_microHelio_origins(origins), d_microHelio_normals(normals),
-            d_microHelio_groups(groups), numberOfMicroHeliostats(microHelioSize), heliostat_id(helio_id),
+            d_microHelio_groups(groups), numberOfMicroHeliostats(microHelioSize), subHeliostat_id(subhelio_id),
             numberOfSubHeliostats(subHelioSize) {}
 
     ~HeliostatArgument() {

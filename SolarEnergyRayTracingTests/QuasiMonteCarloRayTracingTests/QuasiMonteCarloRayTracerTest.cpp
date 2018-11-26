@@ -44,10 +44,6 @@ protected:
          * */
         SceneProcessor sceneProcessor(sceneConfiguration);
         sceneProcessor.processScene(solarScene);
-
-        RectGrid *rectGrid = dynamic_cast<RectGrid *>(solarScene->getGrid0s()[0]);
-        int *d_grid_helio_match = rectGrid->getDeviceGridHeliostatMatch();
-        global_func::gpu2cpu(h_grid_heliostat_match, d_grid_helio_match, rectGrid->getNumberOfGridHeliostatMatch());
     }
 
     void TearDown() {
@@ -69,13 +65,11 @@ public:
         return ans;
     }
 
-    QMCRTracerTestFixture() : solarScene(nullptr), h_heliostat_vertexs(nullptr), h_grid_heliostat_match(nullptr) {}
+    QMCRTracerTestFixture() : solarScene(nullptr){}
 
     QuasiMonteCarloRayTracer QMCRTracer;
 
     SolarScene *solarScene;
-    float3 *h_heliostat_vertexs;    // The value is in host in the test
-    int *h_grid_heliostat_match;    // The value is in host in the test
 };
 
 bool Float3Eq(float3 n1, float3 n2, float gap) {
@@ -105,13 +99,16 @@ TEST_F(QMCRTracerTestFixture, setFlatRectangleHeliostatVertexes) {
     std::vector<float3> subHelioVertexes = deviceArray2vector(d_heliostat_vertexes, heliostatVertexesSize);
 
     std::vector<float3> expectSubHelioVertexes = std::vector<float3>({
+        // heliostat1
         make_float3(2.0f, 1.5f, 7.85f), make_float3(2.0f, -1.5f, 7.85f), make_float3(-2.0f, -1.5f, 7.85f),
+        // heliostat2
         make_float3(2.5f, -1.0f, 11.95f), make_float3(2.5f, -2.0f, 11.95f), make_float3(0.5f, -2.0f, 11.95f),
         make_float3(-0.5f, -1.0f, 11.95f), make_float3(-0.5f, -2.0f, 11.95f), make_float3(-2.5f, -2.0f, 11.95f),
         make_float3(2.5f, 0.5f, 11.95f), make_float3(2.5f, -0.5f, 11.95f), make_float3(0.5f, -0.5f, 11.95f),
         make_float3(-0.5f, 0.5f, 11.95f), make_float3(-0.5f, -0.5f, 11.95f), make_float3(-2.5f, -0.5f, 11.95f),
         make_float3(2.5f, 2.0f, 11.95f), make_float3(2.5f, 1.0f, 11.95f), make_float3(0.5f, 1.0f, 11.95f),
         make_float3(-0.5f, 2.0f, 11.95f), make_float3(-0.5f, 1.0f, 11.95f), make_float3(-2.5f, 1.0f, 11.95f),
+        // heliostat3
         make_float3(-3.40423f, 2.09987f, 20.1253f), make_float3(-3.40541f, -1.90012f, 20.135f),
         make_float3(-6.38378f, -1.90012f, 19.7754f)});
 
@@ -151,6 +148,11 @@ TEST_F(QMCRTracerTestFixture, generateHeliostatArgument) {
 
     delete[] h_microhelio_belonging_groups;
     h_microhelio_belonging_groups = nullptr;
+
+    // 4. Check the subHeliostat index of heliostatArgument
+    //    Since the second heliostat composed by 2*3 sub-heliostat, the third heliostat should begin from 7(1+2*3)
+    HeliostatArgument heliostatArgument2 = QMCRTracer.generateHeliostatArgument(solarScene, 2);
+    EXPECT_EQ(heliostatArgument2.subHeliostat_id, 7);
 
     // Finally, clean up.
     heliostatArgument.CClear();

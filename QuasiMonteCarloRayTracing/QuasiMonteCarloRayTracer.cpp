@@ -22,14 +22,14 @@ void QuasiMonteCarloRayTracer::rayTracing(SolarScene *solarScene, int heliostat_
     int receiver_id = grid->getBelongingReceiverIndex();
     Receiver *receiver = solarScene->getReceivers()[receiver_id];
 
-    // Construct arguments
-    SunrayArgument sunrayArgument = generateSunrayArgument(sunray);
-    HeliostatArgument heliostatArgument = generateHeliostatArgument(solarScene, heliostat_id);
-
     // Construct the sub-heliostat vertexes array
     float3 *d_subHeliostat_vertexes = nullptr;
     setFlatRectangleHeliostatVertexes(d_subHeliostat_vertexes, solarScene->getHeliostats(),
                                       grid->getStartHeliostatPosition(), grid->getNumberOfHeliostats());
+
+    // Construct arguments
+    SunrayArgument sunrayArgument = generateSunrayArgument(sunray);
+    HeliostatArgument heliostatArgument = generateHeliostatArgument(solarScene, heliostat_id);
 
     int receiverGridCombinationIndex = receiverGridCombination(receiver->getType(), grid->getGridType());
     switch (receiverGridCombinationIndex) {
@@ -103,8 +103,19 @@ HeliostatArgument QuasiMonteCarloRayTracer::generateHeliostatArgument(SolarScene
     int pool_size = solarScene->getSunray()->getNumOfSunshapeGroups() *
                     solarScene->getSunray()->getNumOfSunshapeLightsPerGroup();
     int *d_microhelio_belonging_groups = heliostat->generateDeviceMicrohelioGroup(pool_size, numberOfMicrohelio);
+
+    int subHeliostat_id = 0;
+    Grid *grid = solarScene->getGrid0s()[heliostat->getBelongingGridId()];
+    for(int i = 0; i<grid->getNumberOfHeliostats();++i) {
+        int real_id = i+grid->getStartHeliostatPosition();
+        if(real_id == heliostat_id) {
+            break;
+        }
+        Heliostat *before_heliostat = solarScene->getHeliostats()[real_id];
+        subHeliostat_id+=before_heliostat->getSubHelioSize();
+    }
     return HeliostatArgument(d_microhelio_origins, d_microhelio_normals, d_microhelio_belonging_groups,
-                             numberOfMicrohelio, heliostat_id, heliostat->getSubHelioSize());
+                             numberOfMicrohelio, subHeliostat_id, heliostat->getSubHelioSize());
 }
 
 SunrayArgument QuasiMonteCarloRayTracer::generateSunrayArgument(Sunray *sunray) {

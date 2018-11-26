@@ -9,8 +9,8 @@ __host__ __device__ bool rectGridDDA::intersect(const float3 &orig, const float3
     for (int i = start_id; i < end_id; ++i) {
         int subHeliostatIndex = d_grid_heliostat_match[i];
         if (subHeliostatIndex < heliostat_id || subHeliostatIndex >= heliostat_id + numberOfSubHeliostat) {
-            if (global_func::rayParallelogramIntersect(orig, dir, d_heliostat_vertexs[3 * subHeliostatIndex],
-                                                       d_heliostat_vertexs[3 * subHeliostatIndex + 1],
+            if (global_func::rayParallelogramIntersect(orig, dir, d_heliostat_vertexs[3 * subHeliostatIndex + 1],
+                                                       d_heliostat_vertexs[3 * subHeliostatIndex],
                                                        d_heliostat_vertexs[3 * subHeliostatIndex + 2], t, u, v)) {
                 return true;
             }
@@ -54,31 +54,46 @@ __host__ __device__ bool rectGridDDA::collision(const float3 &origin, const floa
         if (intersect(origin, dir, d_subheliostat_vertexes, rectGrid.getDeviceGridHeliostatMatch(),
                       rectGrid.getDeviceGridHelioIndex()[grid_address],
                       rectGrid.getDeviceGridHelioIndex()[grid_address + 1],
-                      heliostatArgument.heliostat_id, heliostatArgument.numberOfSubHeliostats)) {
+                      heliostatArgument.subHeliostat_id, heliostatArgument.numberOfSubHeliostats)) {
             return true;
         }
 
         // next cell location
-        if (tMax.x < tMax.y) {
-            if (tMax.x <= tMax.z) {
+        bool xMinFlag, yMinFlag, zMinFlag;
+        xMinFlag = yMinFlag = zMinFlag = false;
+        if (less(tMax.x, tMax.y)) {
+            if (less(tMax.x, tMax.z) || equal(tMax.x, tMax.z)) {  // +x minimal
                 grid_index.x += Step.x;
-                tMax.x += tDelta.x;
+                xMinFlag = true;
             }
-            if (tMax.x >= tMax.z) {
+            if (less(tMax.z, tMax.x) || equal(tMax.x, tMax.z)) {   // +z minimal
                 grid_index.z += Step.z;
-                tMax.z += tDelta.z;
+                zMinFlag = true;
             }
-        }
-        if (tMax.x > tMax.y) {
-            if (tMax.y <= tMax.z) {
+        } else if (less(tMax.y, tMax.x)) {
+            if (less(tMax.y, tMax.z) || equal(tMax.y, tMax.z)) {  // +y minimal
                 grid_index.y += Step.y;
-                tMax.y += tDelta.y;
+                yMinFlag = true;
             }
-            if (tMax.y >= tMax.z) {
+            if (less(tMax.z, tMax.y) || equal(tMax.y, tMax.z)) {   // +z minimal
                 grid_index.z += Step.z;
-                tMax.z += tDelta.z;
+                zMinFlag = true;
+            }
+        } else { // tMax.x==tMax.y
+            if (less(tMax.x, tMax.z) || equal(tMax.x, tMax.z)) { // +x&y minimal
+                grid_index.x += Step.x;
+                grid_index.y += Step.y;
+                xMinFlag = yMinFlag = true;
+            }
+            if (less(tMax.z, tMax.x) || equal(tMax.x, tMax.z)) {  // +z minimal
+                grid_index.z += Step.z;
+                zMinFlag = true;
             }
         }
+        tMax.x += (xMinFlag) ? tDelta.x : 0;
+        tMax.y += (yMinFlag) ? tDelta.y : 0;
+        tMax.z += (zMinFlag) ? tDelta.z : 0;
     }
+
     return false;
 }

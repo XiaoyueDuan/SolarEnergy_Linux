@@ -104,22 +104,22 @@ int RectGrid::CGridHelioMatch(
 /**
  * Getter and setter of attributes for RectGrid
  */
-void RectGrid::setGridNumber(int3 grid_num_) {
-    RectGrid::grid_num_ = grid_num_;
+void RectGrid::setGridNumber(int3 grid_num) {
+    grid_num_ = grid_num;
 }
 
-void RectGrid::setDeviceGridHeliostatMatch(int *d_grid_helio_match_) {
-    RectGrid::d_grid_helio_match_ = d_grid_helio_match_;
+void RectGrid::setDeviceGridHeliostatMatch(int *d_grid_helio_match) {
+    d_grid_helio_match_ = d_grid_helio_match;
 }
 
-void RectGrid::setDeviceGridHelioIndex(int *d_grid_helio_index_) {
-    RectGrid::d_grid_helio_index_ = d_grid_helio_index_;
+void RectGrid::setDeviceGridHelioIndex(int *d_grid_helio_index) {
+    d_grid_helio_index_ = d_grid_helio_index;
 }
 
 size_t RectGrid::getNumberOfGridHeliostatMatch() const {
     return num_grid_helio_match_;
 }
 
-void RectGrid::setNumberOfGridHeliostatMatch(size_t num_grid_helio_match_) {
-    RectGrid::num_grid_helio_match_ = num_grid_helio_match_;
+void RectGrid::setNumberOfGridHeliostatMatch(size_t num_grid_helio_match) {
+    num_grid_helio_match_ = num_grid_helio_match;
 }
