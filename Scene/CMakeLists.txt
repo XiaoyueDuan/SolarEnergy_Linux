@@ -6,7 +6,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
 
 # packages
 find_package(CUDA REQUIRED)
-set(CUDA_NVCC_FLAGS -O3;-G;-g)
 
 file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp *.cuh)
 list(FILTER CURRENT_HEADERS EXCLUDE REGEX "json-develop/.*") # exclude files under json-develop/
@@ -35,3 +34,5 @@ target_include_directories(datastructure PUBLIC json-develop/single_include)
 target_link_libraries(datastructure nlohmann_json::nlohmann_json)
 
 message("Scene construction ends...")
+
+message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")

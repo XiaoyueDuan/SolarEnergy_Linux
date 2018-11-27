@@ -6,6 +6,9 @@
 #include <fstream>
 #include <sstream>
 
+#include <math.h>
+#include <iostream>
+
 #include "ImageSaver.h"
 #include "global_constant.h"
 
@@ -14,6 +17,8 @@ void ImageSaver::saveText(std::string filename, int height, int width, float *h_
     std::stringstream ss;
 
     int address = 0;
+    float max_value = 0.0f;
+    float summation_value = 0.0f;
     for (int r = 0; r < height; ++r) {
         if (r % rows_package == rows_package - 1) {
             fout << ss.rdbuf();
@@ -26,6 +31,8 @@ void ImageSaver::saveText(std::string filename, int height, int width, float *h_
             if (h_data[address] < Epsilon) {
                 ss << 0;
             } else {
+                max_value = std::max(max_value, h_data[address]);
+                summation_value += h_data[address];
                 ss << std::fixed << std::setprecision(precision) << h_data[address];
             }
 
@@ -36,6 +43,9 @@ void ImageSaver::saveText(std::string filename, int height, int width, float *h_
             }
         }
     }
+
+    std::cout << "Max value is " << max_value << "." << std::endl;
+    std::cout << "Sum value is " << summation_value << "." << std::endl;
 
     fout << ss.rdbuf();
     fout.close();

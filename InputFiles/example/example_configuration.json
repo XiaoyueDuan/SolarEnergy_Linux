@@ -8,6 +8,7 @@
   "dni": 1000.0,
   "num_of_sunshape_groups": 128,
   "num_per_sunshape_group": 2048,
+  "inverse_transform_sampling_groups": 64,
 
   "receiver_pixel_length": 0.01,
 

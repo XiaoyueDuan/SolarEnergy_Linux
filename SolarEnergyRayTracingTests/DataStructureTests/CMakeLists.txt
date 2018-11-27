@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
 
 # packages
 find_package(CUDA REQUIRED)
-set(CUDA_NVCC_FLAGS -O3;-G;-g)
+#set(CUDA_NVCC_FLAGS -O3;-G;-g)
 
 # Test Target
 file(GLOB CURRENT_SOURCES *.cpp *.cu)

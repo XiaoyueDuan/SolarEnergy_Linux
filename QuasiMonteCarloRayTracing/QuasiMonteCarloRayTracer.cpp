@@ -37,15 +37,16 @@ void QuasiMonteCarloRayTracer::rayTracing(SolarScene *solarScene, int heliostat_
             /** RectangleReceiver v.s. RectGrid*/
             auto rectangleReceiver = dynamic_cast<RectangleReceiver *>(receiver);
             auto rectGrid = dynamic_cast<RectGrid *>(grid);
-            float factor = sunray->getDNI() * heliostat->getPixelLength() * heliostat->getPixelLength() *
-                           sunray->getReflectiveRate() / float(sunray->getNumOfSunshapeLightsPerGroup());
+            float ratio = heliostat->getPixelLength() / receiver->getPixelLength();
+            float factor = sunray->getDNI() * ratio * ratio * sunray->getReflectiveRate()
+                    / float(sunray->getNumOfSunshapeLightsPerGroup()) ;
             RectangleReceiverRectGridRayTracing(sunrayArgument, rectangleReceiver, rectGrid, heliostatArgument,
                                                 d_subHeliostat_vertexes, factor);
             break;
         }
-        /**
-         * TODO: Add other branch for different type of receiver or grid.
-         */
+            /**
+             * TODO: Add other branch for different type of receiver or grid.
+             */
         default:
             break;
     }
@@ -106,13 +107,13 @@ HeliostatArgument QuasiMonteCarloRayTracer::generateHeliostatArgument(SolarScene
 
     int subHeliostat_id = 0;
     Grid *grid = solarScene->getGrid0s()[heliostat->getBelongingGridId()];
-    for(int i = 0; i<grid->getNumberOfHeliostats();++i) {
-        int real_id = i+grid->getStartHeliostatPosition();
-        if(real_id == heliostat_id) {
+    for (int i = 0; i < grid->getNumberOfHeliostats(); ++i) {
+        int real_id = i + grid->getStartHeliostatPosition();
+        if (real_id == heliostat_id) {
             break;
         }
         Heliostat *before_heliostat = solarScene->getHeliostats()[real_id];
-        subHeliostat_id+=before_heliostat->getSubHelioSize();
+        subHeliostat_id += before_heliostat->getSubHelioSize();
     }
     return HeliostatArgument(d_microhelio_origins, d_microhelio_normals, d_microhelio_belonging_groups,
                              numberOfMicrohelio, subHeliostat_id, heliostat->getSubHelioSize());
@@ -125,7 +126,8 @@ SunrayArgument QuasiMonteCarloRayTracer::generateSunrayArgument(Sunray *sunray) 
 }
 
 int QuasiMonteCarloRayTracer::setFlatRectangleHeliostatVertexes(float3 *&d_heliostat_vertexes,
-        std::vector<Heliostat *> &heliostats, int start_id, int end_id) {
+                                                                std::vector<Heliostat *> &heliostats, int start_id,
+                                                                int end_id) {
     if (start_id < 0 || start_id > end_id || end_id > heliostats.size()) {
         throw std::runtime_error(
                 __FILE__". The index " + std::to_string(start_id) + " and " + std::to_string(end_id) + " is invalid.");

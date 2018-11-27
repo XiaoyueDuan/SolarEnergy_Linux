@@ -99,34 +99,18 @@ TEST_F(QMCRTracerTestFixture, setFlatRectangleHeliostatVertexes) {
     std::vector<float3> subHelioVertexes = deviceArray2vector(d_heliostat_vertexes, heliostatVertexesSize);
 
     std::vector<float3> expectSubHelioVertexes = std::vector<float3>({
-                                                                             // heliostat1
-                                                                             make_float3(2.0f, 1.5f, 7.85f),
-                                                                             make_float3(2.0f, -1.5f, 7.85f),
-                                                                             make_float3(-2.0f, -1.5f, 7.85f),
-                                                                             // heliostat2
-                                                                             make_float3(2.5f, -1.0f, 11.95f),
-                                                                             make_float3(2.5f, -2.0f, 11.95f),
-                                                                             make_float3(0.5f, -2.0f, 11.95f),
-                                                                             make_float3(-0.5f, -1.0f, 11.95f),
-                                                                             make_float3(-0.5f, -2.0f, 11.95f),
-                                                                             make_float3(-2.5f, -2.0f, 11.95f),
-                                                                             make_float3(2.5f, 0.5f, 11.95f),
-                                                                             make_float3(2.5f, -0.5f, 11.95f),
-                                                                             make_float3(0.5f, -0.5f, 11.95f),
-                                                                             make_float3(-0.5f, 0.5f, 11.95f),
-                                                                             make_float3(-0.5f, -0.5f, 11.95f),
-                                                                             make_float3(-2.5f, -0.5f, 11.95f),
-                                                                             make_float3(2.5f, 2.0f, 11.95f),
-                                                                             make_float3(2.5f, 1.0f, 11.95f),
-                                                                             make_float3(0.5f, 1.0f, 11.95f),
-                                                                             make_float3(-0.5f, 2.0f, 11.95f),
-                                                                             make_float3(-0.5f, 1.0f, 11.95f),
-                                                                             make_float3(-2.5f, 1.0f, 11.95f),
-                                                                             // heliostat3
-                                                                             make_float3(-3.40423f, 2.09987f, 20.1253f),
-                                                                             make_float3(-3.40541f, -1.90012f, 20.135f),
-                                                                             make_float3(-6.38378f, -1.90012f,
-                                                                                         19.7754f)});
+    // heliostat1
+    make_float3(2.0f, 1.5f, 7.85f), make_float3(2.0f, -1.5f, 7.85f), make_float3(-2.0f, -1.5f, 7.85f),
+    // heliostat2
+    make_float3(2.5f, -1.0f, 11.95f), make_float3(2.5f, -2.0f, 11.95f), make_float3(0.5f, -2.0f, 11.95f),
+    make_float3(-0.5f, -1.0f, 11.95f), make_float3(-0.5f, -2.0f, 11.95f), make_float3(-2.5f, -2.0f, 11.95f),
+    make_float3(2.5f, 0.5f, 11.95f), make_float3(2.5f, -0.5f, 11.95f), make_float3(0.5f, -0.5f, 11.95f),
+    make_float3(-0.5f, 0.5f, 11.95f), make_float3(-0.5f, -0.5f, 11.95f), make_float3(-2.5f, -0.5f, 11.95f),
+    make_float3(2.5f, 2.0f, 11.95f), make_float3(2.5f, 1.0f, 11.95f), make_float3(0.5f, 1.0f, 11.95f),
+    make_float3(-0.5f, 2.0f, 11.95f), make_float3(-0.5f, 1.0f, 11.95f), make_float3(-2.5f, 1.0f, 11.95f),
+    // heliostat3
+    make_float3(-3.40423f, 2.09987f, 20.1253f), make_float3(-3.40541f, -1.90012f, 20.135f),
+    make_float3(-6.38378f, -1.90012f,19.7754f)});
 
     EXPECT_THAT(expectSubHelioVertexes, ::testing::Pointwise(FloatNearPointwise(1e-3), subHelioVertexes));
 }

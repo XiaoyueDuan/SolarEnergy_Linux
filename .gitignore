@@ -2,6 +2,7 @@
 
 # Build Results
 cmake-build-debug/
+cmake-build-release/
 
 # CLion files
 .idea
@@ -11,5 +12,6 @@ SolarEnergyRayTracingTests/lib
 Scene/json-develop
 
 # Output
+OutputFiles/
 SolarEnergyRayTracingTests/ToolTests/test_output
 

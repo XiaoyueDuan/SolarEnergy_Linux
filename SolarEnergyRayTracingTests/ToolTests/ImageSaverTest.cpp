@@ -18,7 +18,7 @@ TEST(ImageSaver, saveAllZeros) {
     auto start = std::chrono::high_resolution_clock::now();
     ImageSaver::saveText("test_output/all_zeros.txt", height, width, h_array);
     auto end = std::chrono::high_resolution_clock::now();
-    long long elapsed = std::chrono::duration_cast<std::chrono::microseconds>(start - end).count();
+    long long elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end-start).count();
     std::cout << "\nSave text file for the size of " << height << " * " << width << " large uses " << elapsed
               << " microseconds.";
 }

@@ -38,7 +38,7 @@ __global__ void map_raytracing(SunrayArgument sunrayArgument, RectangleReceiver 
 void RectangleReceiverRectGridRayTracing(SunrayArgument &sunrayArgument, RectangleReceiver *rectangleReceiver,
                                          RectGrid *rectGrid, HeliostatArgument &heliostatArgument,
                                          float3 *d_subHeliostat_vertexes, float factor) {
-    int nThreads = 256;
+    int nThreads = 512;
     dim3 nBlocks;
     global_func::setThreadsBlocks(nBlocks, nThreads,
                                   heliostatArgument.numberOfMicroHeliostats * sunrayArgument.numberOfLightsPerGroup,

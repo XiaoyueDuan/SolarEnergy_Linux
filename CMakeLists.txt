@@ -4,7 +4,8 @@ project(SolarEnergyRayTracing)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
 
-message("main-${CMAKE_CURRENT_SOURCE_DIR}")
+# packages
+find_package(CUDA REQUIRED)
 
 # Tool
 add_subdirectory(Tool/ArgumentParser)
@@ -23,8 +24,11 @@ set(GOOGLE_TEST_PATH SolarEnergyRayTracingTests)
 add_subdirectory(${GOOGLE_TEST_PATH})
 
 # Set Libs
-#set (EXTRA_LIBS ${EXTRA_LIBS} datastructure randomGenerator)
+set (EXTRA_LIBS ${EXTRA_LIBS} quasiMonteCarloRayTracing
+        argumentParser image_saver)
 
 # Finial Project
-add_executable(SolarEnergyRayTracing main.cpp)
-#target_link_libraries (SolarEnergyRayTracing ${EXTRA_LIBS})
+cuda_add_executable(SolarEnergyRayTracing main.cpp RayTracingPipeline.cpp)
+target_link_libraries (SolarEnergyRayTracing ${EXTRA_LIBS})
+
+message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
