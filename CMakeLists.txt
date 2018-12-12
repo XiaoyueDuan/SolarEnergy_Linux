@@ -16,8 +16,11 @@ add_subdirectory(Tool/ImageSaver)
 # Data Structure
 add_subdirectory(Scene)
 
-# Ray Tracing
+# Quasi Monte Carlo Ray Tracing
 add_subdirectory(QuasiMonteCarloRayTracing)
+
+# Ray Tracing Pipeline
+add_subdirectory(RayTracingPipeline)
 
 # Tests
 set(GOOGLE_TEST_PATH SolarEnergyRayTracingTests)
