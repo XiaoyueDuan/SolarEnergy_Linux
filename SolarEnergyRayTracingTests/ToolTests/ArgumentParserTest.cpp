@@ -91,7 +91,7 @@ TEST_F(ArgumentParserFixture, parserBadExample_nonExistFilePath) {
      *          bool ans2 = argumentParser->parser(argc, argv); // ans = true
      *       }
      * */
-    EXPECT_FALSE(argumentParser->parser(argc, argv));
+    EXPECT_ANY_THROW(argumentParser->parser(argc, argv));
 }
 
 TEST_F(ArgumentParserFixture, parserBadExample_nonMatchSuffix) {
@@ -107,7 +107,7 @@ TEST_F(ArgumentParserFixture, parserBadExample_nonMatchSuffix) {
     };
     int argc = sizeof(argv) / sizeof(argv[0]);
 
-    EXPECT_FALSE(argumentParser->parser(argc, argv));
+    EXPECT_ANY_THROW(argumentParser->parser(argc, argv));
 }
 
 TEST_F(ArgumentParserFixture, parserBadExample_unknownOption) {

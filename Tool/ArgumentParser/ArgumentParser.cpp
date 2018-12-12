@@ -5,6 +5,7 @@
 #include <fstream>
 #include <getopt.h>
 #include <cstring>
+#include <stdexcept>
 
 #include "ArgumentParser.h"
 
@@ -13,20 +14,21 @@ void ArgumentParser::initialize() {
             "/home/dxt/CLionProjects/SolarEnergyRayTracing/InputFiles/example/example_configuration.json";
     scene_path =
             "/home/dxt/CLionProjects/SolarEnergyRayTracing/InputFiles/example/example_scene.scn";
-
 }
 
 bool ArgumentParser::check_valid(std::string file_path, std::string suffix) {
     // 1. Suffix exist at the end of file_path
-    if (file_path.substr(file_path.size() - suffix.size(), suffix.size()) != suffix) {
-        printf("The path of file '%s' does not consist on '%s' suffix",
-               file_path.c_str(), suffix.c_str());
-        return false;
+    if (file_path.size() < suffix.size() ||
+        file_path.substr(file_path.size() - suffix.size(), suffix.size()) != suffix) {
+        throw std::runtime_error("The path of file '" + file_path + "' does not consist on '" + suffix + "' suffix.\n");
     }
 
     // 2. The path of the file exists to a real file
     std::ifstream f(file_path.c_str());
-    return f.good();
+    if (!f.good()) {
+        throw std::runtime_error("The path of file '" + file_path + "' cannot open. Please check the path.\n");
+    }
+    return true;
 }
 
 bool ArgumentParser::parser(int argc, char **argv) {
@@ -47,23 +49,21 @@ bool ArgumentParser::parser(int argc, char **argv) {
             return false;
         }
 
-        if (c == 'c' ||
-            !std::strcmp(long_options[option_index].name, "configuration_path")) {
+        if (c == 'c') {
             configuration_path = optarg;
             printf("\noption -c/configuration_path with value '%s'\n", optarg);
-        } else if (c == 's' ||
-                   !std::strcmp(long_options[option_index].name, "scene_path")) {
+        } else if (c == 's') {
             scene_path = optarg;
             printf("\noption -s/scene_path with value '%s'\n", optarg);
         }
     }
 
     bool ans = true;
-    if(!check_valid(configuration_path, ".json")) {
+    if (!check_valid(configuration_path, ".json")) {
         printf("cannot find file '%s'\n", configuration_path.c_str());
         ans = false;
     }
-    if(!check_valid(scene_path, ".scn")) {
+    if (!check_valid(scene_path, ".scn")) {
         printf("cannot find file '%s'\n", scene_path.c_str());
         ans = false;
     }
