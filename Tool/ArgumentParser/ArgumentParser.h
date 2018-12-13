@@ -11,10 +11,13 @@ class ArgumentParser {
 private:
     std::string configuration_path;
     std::string scene_path;
+    std::string heliostat_index_load_path;
+    std::string output_path;    // such as "$HOME/dir/"
 
     void initialize();
 
-    bool check_valid(std::string path, std::string suffix);
+    void check_valid_file(std::string path, std::string suffix);
+    void check_valid_directory(std::string path);
 
 public:
     bool parser(int argc, char **argv);
@@ -24,6 +27,12 @@ public:
 
     const std::string &getScenePath() const;
     bool setScenePath(const std::string &scene_path);
+
+    const std::string &getHeliostatIndexLoadPath() const;
+    void setHeliostatIndexLoadPath(const std::string &heliostat_index_load_path);
+
+    const std::string &getOutputPath() const;
+    void setOutputPath(const std::string &output_path);
 
 };
 

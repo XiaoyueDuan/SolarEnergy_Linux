@@ -24,7 +24,15 @@ public:
     char executable_file_name[21] = "executable_file_name";
     char good_configuration_path_option[21] = "--configuration_path";
     char good_scene_path_option[13] = "--scene_path";
+    char good_output_path_option[14] = "--output_path";
+    char good_heliostat_index_option[25] = "--heliostat_indexes_path";
     char unknown_option[17] = "--unknown_option";
+
+    char good_brief_configuration_path_option[3] = "-c";
+    char good_brief_scene_path_option[3] = "-s";
+    char good_brief_output_path_option[3] = "-o";
+    char good_brief_heliostat_index_option[3] = "-h";
+    char unknown_brief_option[3] = "-u";
 };
 
 TEST_F(ArgumentParserFixture, parserGoodExample) {
@@ -35,17 +43,41 @@ TEST_F(ArgumentParserFixture, parserGoodExample) {
      * */
     char correctConfigurationPath[] = "test_file/test_configuration.json";
     char correctScenePath[] = "test_file/test_scene.scn";
+    char correctOutputPath[] = "test_output/";
+    char correctHeliostatIndexPath[] = "test_file/task_heliostats_index.txt";
 
-    char *argv[] = {
+    std::cout<<"\n1. With all long arguments";
+    char *argv1[] = {
             executable_file_name,
-            good_configuration_path_option,
-            correctConfigurationPath,
-            good_scene_path_option,
-            correctScenePath
+            good_configuration_path_option, correctConfigurationPath,
+            good_scene_path_option, correctScenePath,
+            good_output_path_option, correctOutputPath,
+            good_heliostat_index_option, correctHeliostatIndexPath
     };
-    int argc = sizeof(argv) / sizeof(argv[0]);
+    int argc = sizeof(argv1) / sizeof(argv1[0]);
+    EXPECT_TRUE(argumentParser->parser(argc, argv1));
 
-    EXPECT_TRUE(argumentParser->parser(argc, argv));
+    std::cout<<"\n\n2. With all short arguments";
+    char *argv2[] = {
+            executable_file_name,
+            good_brief_configuration_path_option, correctConfigurationPath,
+            good_brief_scene_path_option, correctScenePath,
+            good_brief_output_path_option, correctOutputPath,
+            good_brief_heliostat_index_option, correctHeliostatIndexPath
+    };
+    argc = sizeof(argv2)/sizeof(argv2[0]);
+    EXPECT_TRUE(argumentParser->parser(argc, argv2));
+
+    std::cout<<"\n\n3. With the mixture of short and long arguments";
+    char *argv3[] = {
+            executable_file_name,
+            good_brief_configuration_path_option, correctConfigurationPath,
+            good_scene_path_option, correctScenePath,
+            good_output_path_option, correctOutputPath,
+            good_brief_heliostat_index_option, correctHeliostatIndexPath
+    };
+    argc = sizeof(argv3)/sizeof(argv3[0]);
+    EXPECT_TRUE(argumentParser->parser(argc, argv3));
 }
 
 TEST_F(ArgumentParserFixture, parserGoodExampleWithEmptyOptions) {
@@ -53,45 +85,80 @@ TEST_F(ArgumentParserFixture, parserGoodExampleWithEmptyOptions) {
             executable_file_name
     };
     int argc = sizeof(argv) / sizeof(argv[0]);
-
     EXPECT_TRUE(argumentParser->parser(argc, argv));
 }
 
 TEST_F(ArgumentParserFixture, parserGoodExampleWithPartialOptions) {
     char correctConfigurationPath[] = "test_file/test_configuration.json";
+    char correctScenePath[] = "test_file/test_scene.scn";
 
-    char *argv[] = {
+    std::cout<<"\n1. With partial of long arguments";
+    char *argv1[] = {
             executable_file_name,
-            good_configuration_path_option,
-            correctConfigurationPath,
+            good_configuration_path_option, correctConfigurationPath,
     };
-    int argc = sizeof(argv) / sizeof(argv[0]);
+    int argc = sizeof(argv1) / sizeof(argv1[0]);
+    EXPECT_TRUE(argumentParser->parser(argc, argv1));
 
-    EXPECT_TRUE(argumentParser->parser(argc, argv));
+    std::cout<<"\n\n2. With partial of short arguments";
+    char *argv2[] = {
+            executable_file_name,
+            good_brief_configuration_path_option, correctConfigurationPath,
+    };
+    argc = sizeof(argv2) / sizeof(argv2[0]);
+    EXPECT_TRUE(argumentParser->parser(argc, argv2));
+
+    std::cout<<"\n\n3. With partial of mixture of short and long arguments";
+    char *argv3[] = {
+            executable_file_name,
+            good_brief_configuration_path_option, correctConfigurationPath,
+            good_scene_path_option, correctScenePath
+    };
+    argc = sizeof(argv3) / sizeof(argv3[0]);
+    EXPECT_TRUE(argumentParser->parser(argc, argv3));
 }
 
 TEST_F(ArgumentParserFixture, parserBadExample_nonExistFilePath) {
     char nonExistConfigurationPath[] = "test_file/nonExist_configuration.json";
     char nonExistScenePath[] = "test_file/nonExist_scene.scn";
+    char nonHeliostatIndexPath[] = "test_file/nonExist_heliostat_index.txt";
+    char nonOutputDirectoryPath[] = "non_exist_dir/";
 
-    char *argv[] = {
+    std::cout<<"\n1. Non-existed configuration";
+    char *argv1[] = {
             executable_file_name,
             good_configuration_path_option,
-            nonExistConfigurationPath,
+            nonExistConfigurationPath
+    };
+    int argc = sizeof(argv1) / sizeof(argv1[0]);
+    EXPECT_ANY_THROW(argumentParser->parser(argc, argv1));
+
+    std::cout<<"\n\n2. Non-existed scene";
+    char *argv2[] = {
+            executable_file_name,
             good_scene_path_option,
             nonExistScenePath
     };
-    int argc = sizeof(argv) / sizeof(argv[0]);
-    /**
-     * TODO: argumentParser->parser(argc, argv) can only be called once.
-     *       for example, in this test:
-     *       // codes
-     *       {
-     *          bool ans1 = argumentParser->parser(argc, argv); // ans = false
-     *          bool ans2 = argumentParser->parser(argc, argv); // ans = true
-     *       }
-     * */
-    EXPECT_ANY_THROW(argumentParser->parser(argc, argv));
+    argc = sizeof(argv2) / sizeof(argv2[0]);
+    EXPECT_ANY_THROW(argumentParser->parser(argc, argv2));
+
+    std::cout<<"\n\n3. Non-existed heliostat index input file";
+    char *argv3[] = {
+            executable_file_name,
+            good_heliostat_index_option,
+            nonHeliostatIndexPath
+    };
+    argc = sizeof(argv3) / sizeof(argv3[0]);
+    EXPECT_ANY_THROW(argumentParser->parser(argc, argv3));
+
+    std::cout<<"\n\n4. Non-existed output directory";
+    char *argv4[] = {
+            executable_file_name,
+            good_output_path_option,
+            nonOutputDirectoryPath
+    };
+    argc = sizeof(argv4) / sizeof(argv4[0]);
+    EXPECT_ANY_THROW(argumentParser->parser(argc, argv4));
 }
 
 TEST_F(ArgumentParserFixture, parserBadExample_nonMatchSuffix) {
@@ -106,7 +173,6 @@ TEST_F(ArgumentParserFixture, parserBadExample_nonMatchSuffix) {
             nonMatchSuffixScenePath
     };
     int argc = sizeof(argv) / sizeof(argv[0]);
-
     EXPECT_ANY_THROW(argumentParser->parser(argc, argv));
 }
 
