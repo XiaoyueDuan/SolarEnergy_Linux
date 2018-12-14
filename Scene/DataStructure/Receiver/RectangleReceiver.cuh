@@ -24,6 +24,9 @@ public:
     }
 
     virtual void CInit(int geometry_info);
+    virtual float3 getFocusCenter(const float3 &heliostat_position);
+    void setFocuscenter();							        // call this function after Cset_vertex();
+
     float3 getRectVertex(int index) const;
     float3 getLocalNormal() const;
 
@@ -33,8 +36,8 @@ private:
     void Cset_localvertex();									// set local vertex position
     void Cset_vertex();											// set world vertex
     virtual void Cset_resolution(int geometry_info);
-    virtual void Cset_focuscenter();							// call this function after Cset_vertex();
 
+    float3 focus_center_;
     float3 localnormal_;
     float3 rect_vertex_[4];
 };

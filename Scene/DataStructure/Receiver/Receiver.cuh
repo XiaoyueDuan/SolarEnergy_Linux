@@ -8,9 +8,9 @@ public:
     /*
      * Initialize the parameters
      */
-    virtual void CInit(int geometry_info) {}
-    virtual void Cset_resolution(int geometry_info) {}
-    virtual void Cset_focuscenter() {}
+    virtual void CInit(int geometry_info) = 0;
+    virtual void Cset_resolution(int geometry_info) = 0;
+    virtual float3 getFocusCenter(const float3 &heliostat_position) = 0;
 
     /*
      * Allocate the final image matrix
@@ -31,7 +31,6 @@ public:
         normal_ = rect.normal_;
         pos_ = rect.pos_;
         size_ = rect.size_;
-        focus_center_ = rect.focus_center_;
         face_num_ = rect.face_num_;
         pixel_length_ = rect.pixel_length_;
         d_image_ = rect.d_image_;
@@ -52,31 +51,24 @@ public:
     float3 getSize() const;
     void setSize(float3 size_);
 
-    float3 getFocusCenter() const;
-    void setFocusCenter(float3 focus_center);
-
     int getFaceIndex() const;
     void setFaceIndex(int face_num);
 
     float getPixelLength() const;
-    void setPixelLength(float pixel_length);
 
     __host__ __device__ float *getDeviceImage() const {
         return d_image_;
     }
-    void setDeviceImage(float *d_image);
 
     __host__ __device__ int2 getResolution() const {
         return resolution_;
     }
-    void setResolution(int2 resolution);
 
 protected:
     int type_;
     float3 normal_;
     float3 pos_;
     float3 size_;
-    float3 focus_center_;                // fixed for a scene
     int face_num_;                        // the number of receiving face
     float pixel_length_;
     float *d_image_;                    // on GPU, size = resolution_.x * resolution_.y

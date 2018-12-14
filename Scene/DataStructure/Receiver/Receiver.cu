@@ -68,14 +68,6 @@ void Receiver::setSize(float3 size) {
     size_ = size;
 }
 
-float3 Receiver::getFocusCenter() const {
-    return focus_center_;
-}
-
-void Receiver::setFocusCenter(float3 focus_center) {
-    focus_center_ = focus_center;
-}
-
 int Receiver::getFaceIndex() const {
     return face_num_;
 }
@@ -86,16 +78,4 @@ void Receiver::setFaceIndex(int face_num) {
 
 float Receiver::getPixelLength() const {
     return pixel_length_;
-}
-
-void Receiver::setPixelLength(float pixel_length) {
-    pixel_length_ = pixel_length;
-}
-
-void Receiver::setDeviceImage(float *d_image) {
-    d_image_ = d_image;
-}
-
-void Receiver::setResolution(int2 resolution) {
-    resolution_ = resolution;
 }

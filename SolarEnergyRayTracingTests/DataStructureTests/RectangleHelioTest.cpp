@@ -6,6 +6,7 @@
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "DataStructureUtil.h"
 #include "RectangleHelio.cuh"
 #include "global_function.cuh"
 #include "RandomNumberGenerator/RandomGenerator.cuh"
@@ -32,12 +33,6 @@ public:
         return ans;
     }
 };
-
-bool Float3Eq(float3 n1, float3 n2, float gap) {
-    return (n1.x > n2.x - gap && n1.x < n2.x + gap) &&
-           (n1.y > n2.y - gap && n1.y < n2.y + gap) &&
-           (n1.z > n2.z - gap && n1.z < n2.z + gap);
-}
 
 MATCHER_P(FloatNearPointwise, gap, "Check whether two float3 objects are almost the same") {
     float3 n1 = std::get<0>(arg);
