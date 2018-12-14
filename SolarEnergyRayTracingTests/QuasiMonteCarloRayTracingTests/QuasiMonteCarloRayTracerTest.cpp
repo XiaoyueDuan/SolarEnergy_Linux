@@ -141,7 +141,7 @@ TEST_F(QMCRTracerTestFixture, generateHeliostatArgument) {
     global_func::gpu2cpu(h_microhelio_belonging_groups, heliostatArgument.d_microHelio_groups,
                          heliostatArgument.numberOfMicroHeliostats);
 
-    std::cout << "The starting position of each micro-heliostats are following:" << std::endl;
+    std::cout << "\nThe starting position of each micro-heliostats are following:" << std::endl;
     for (int i = 0; i < heliostatArgument.numberOfMicroHeliostats; ++i) {
         std::cout << h_microhelio_belonging_groups[i] << " ";
     }
@@ -187,15 +187,13 @@ TEST_F(QMCRTracerTestFixture, rayTracing) {
     int2 resolution = receiver->getResolution();
     global_func::gpu2cpu(h_array, d_array, resolution.x * resolution.y);
 
+    float sum = 0.0f;
     for (int r = 0; r < resolution.y; ++r) {
         std::cout << std::endl;
         for (int c = 0; c < resolution.x; ++c) {
-//            if (h_array[r * resolution.x + c] > 0) {
-//                std::cout << 1 << ' ';
-//            } else {
-//                std::cout << 0 << ' ';
-//            }
-            std::cout<<h_array[r*resolution.x+c]<<'\t';
+            sum+=h_array[r*resolution.x+c];
+            std::cout<<h_array[r*resolution.x+c]<<' ';
         }
     }
+    std::cout<<"\nSum: "<<sum<<std::endl;
 }

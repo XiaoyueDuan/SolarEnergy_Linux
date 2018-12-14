@@ -29,7 +29,7 @@ protected:
         solarScene = SolarScene::GetInstance();
 
         SceneConfiguration *sceneConfiguration = SceneConfiguration::getInstance();
-        std::string configuration_path = "test_file/test_configuration.json";
+        std::string configuration_path = "test_file/test_configuration2.json";
         sceneConfiguration->loadConfiguration(configuration_path);
 
         std::string scene_path = "test_file/test_scene.scn";
@@ -66,7 +66,7 @@ public:
     void compareForHeliostat1Result(std::vector<float> image, float distance, int numberOfSunraysPerGroup, int row,
                                     int col) {
         vector<float> expect_result(row * col, 0.0f);
-        float expect_value = rectangleReceiverIntersect::eta_aAlpha(distance) * float(numberOfSunraysPerGroup);
+        float expect_value = eta_aAlpha(distance) * float(numberOfSunraysPerGroup);
         for (int r = 7; r < 13; ++r) {          //six
             for (int c = 12; c < 20; ++c) {     //eight
                 expect_result[r * col + c] = expect_value;
@@ -82,7 +82,7 @@ public:
     void compareForHeliostat2Result(std::vector<float> image, float distance, int numberOfSunraysPerGroup, int row,
                                     int col) {
         vector<float> expect_result(row * col, 0.0f);
-        float expect_value = rectangleReceiverIntersect::eta_aAlpha(distance) * float(numberOfSunraysPerGroup);
+        float expect_value = eta_aAlpha(distance) * float(numberOfSunraysPerGroup);
 
         expect_result[6 * col + 11] = expect_value;
         expect_result[6 * col + 12] = expect_value;
@@ -189,7 +189,7 @@ TEST_F(rectangleReceiverIntersectionFixture, rectangleReceiverIntersection) {
     SunrayArgument sunrayArgument = QMCRTracer.generateSunrayArgument(solarScene->getSunray());
     RectangleReceiver *rectangleReceiver = dynamic_cast<RectangleReceiver *>(solarScene->getReceivers()[0]);
     RectGrid *rectGrid = dynamic_cast<RectGrid *>(solarScene->getGrid0s()[0]);
-    float factor = 1.0f;
+    float factor = 1000.0f/2048.0f;
     float3 *d_subHeliostat_vertexes = nullptr;
     int start_heliostat_id = rectGrid->getStartHeliostatPosition();
     int end_heliostat_id = start_heliostat_id + rectGrid->getNumberOfHeliostats();
@@ -203,13 +203,16 @@ TEST_F(rectangleReceiverIntersectionFixture, rectangleReceiverIntersection) {
 
     int2 resolution = rectangleReceiver->getResolution();
     vector<float> image = deviceArray2vector(rectangleReceiver->getDeviceImage(), resolution.y * resolution.x);
-    std::cout <<"Heliostat 1:"<< std::endl;
+    std::cout << "Heliostat 1:" << std::endl;
+    float sum = 0.0f;
     for (int r = 0; r < resolution.y; ++r) {
         std::cout << std::endl;
         for (int c = 0; c < resolution.x; ++c) {
-            std::cout << image[r * resolution.x + c] << "\t\t";
+            std::cout << image[r * resolution.x + c] << " ";
+            sum += image[r * resolution.x + c];
         }
     }
+    std::cout << "\nSum: " << sum << std::endl;
 
     // Heliostat 2
     HeliostatArgument heliostatArgument1 = QMCRTracer.generateHeliostatArgument(solarScene, 1);
@@ -222,7 +225,7 @@ TEST_F(rectangleReceiverIntersectionFixture, rectangleReceiverIntersection) {
     for (int r = 0; r < resolution.y; ++r) {
         std::cout << std::endl;
         for (int c = 0; c < resolution.x; ++c) {
-            std::cout << image[r * resolution.x + c] << "\t\t";
+            std::cout << image[r * resolution.x + c] << " ";
         }
     }
 }

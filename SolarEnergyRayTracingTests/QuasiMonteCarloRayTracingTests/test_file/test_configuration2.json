@@ -14,5 +14,5 @@
 
   "helio_disturb_std": 0.02,
   "helio_reflected_rate": 2.0,
-  "helio_pixel_length": 1.0
+  "helio_pixel_length": 0.5
 }
