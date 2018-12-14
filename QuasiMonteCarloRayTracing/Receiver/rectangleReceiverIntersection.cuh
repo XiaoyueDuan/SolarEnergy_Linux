@@ -3,7 +3,7 @@
 
 #include "vector_arithmetic.cuh"
 #include "RectangleReceiver.cuh"
-#include "receiverIntersectionUtil.h"
+#include "receiverIntersectionUtil.cuh"
 
 namespace rectangleReceiverIntersect {
     __device__ void

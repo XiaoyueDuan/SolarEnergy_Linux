@@ -9,6 +9,7 @@
 
 #include "RectangleHelio.cuh"
 #include "RectangleReceiver.cuh"
+#include "CylinderReceiver.cuh"
 #include "RectGrid.cuh"
 
 float3 setFloat3Field(std::string field_name, std::istream &stringstream) {
@@ -107,6 +108,9 @@ void SceneLoader::add_receiver(SolarScene *solarScene, std::istream &stringstrea
     switch (type) {
         case 0:
             receiver = new RectangleReceiver();
+            break;
+        case 1:
+            receiver = new CylinderReceiver();
             break;
         default:
             throw std::runtime_error("Receiver type are not defined.\n");

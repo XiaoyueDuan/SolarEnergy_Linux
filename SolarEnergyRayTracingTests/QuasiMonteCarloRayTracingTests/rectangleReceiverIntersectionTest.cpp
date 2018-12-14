@@ -10,9 +10,9 @@
 #include "Receiver/rectangleReceiverIntersection.cuh"
 #include "QuasiMonteCarloRayTracer.h"
 #include "RectangleReceiverRectGridRayTracing.cuh"
-#include "global_function.cuh"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "receiverIntersectUtil.h"
 
 MATCHER_P(FloatNearPointwise, gap, "Check whether two float values are almost the same\n") {
     float n1 = std::get<0>(arg);
@@ -49,20 +49,6 @@ protected:
     }
 
 public:
-    std::vector<float> deviceArray2vector(float *d_array, int size) {
-        vector<float> ans(size, 0.0f);
-        float *h_array = nullptr;
-
-        global_func::gpu2cpu(h_array, d_array, size);
-        for (int i = 0; i < size; ++i) {
-            ans[i] = h_array[i];
-        }
-
-        delete[] h_array;
-        h_array = nullptr;
-        return ans;
-    }
-
     void compareForHeliostat1Result(std::vector<float> image, float distance, int numberOfSunraysPerGroup, int row,
                                     int col) {
         vector<float> expect_result(row * col, 0.0f);
@@ -120,29 +106,6 @@ public:
         EXPECT_THAT(expect_result, ::testing::Pointwise(FloatNearPointwise(1e-1), image));
     }
 
-    void changeSunLightsAndPerturbationToParallel() {
-        Sunray *sunray = solarScene->getSunray();
-
-        // Generate parallel lights and transfer them to device
-        int size = sunray->getNumOfSunshapeLightsPerGroup() * sunray->getNumOfSunshapeGroups();
-        float3 *h_samplelights_ans_perturbation = new float3[size];
-        for (int i = 0; i < size; ++i) {
-            h_samplelights_ans_perturbation[i] = make_float3(0.0f, 1.0f, 0.0f);
-        }
-        float3 *d_samplelights = nullptr;
-        float3 *d_perturbation = nullptr;
-        global_func::cpu2gpu(d_samplelights, h_samplelights_ans_perturbation, size);
-        global_func::cpu2gpu(d_perturbation, h_samplelights_ans_perturbation, size);
-
-        // Set the perturbation and sample lights of sunray
-        sunray->CClear();
-        sunray->setDevicePerturbation(d_samplelights);
-        sunray->setDeviceSampleLights(d_perturbation);
-
-        // Clear
-        delete[] h_samplelights_ans_perturbation;
-    }
-
     rectangleReceiverIntersectionFixture() : solarScene(nullptr) {}
 
     QuasiMonteCarloRayTracer QMCRTracer;
@@ -152,7 +115,7 @@ public:
 
 TEST_F(rectangleReceiverIntersectionFixture, rectangleReceiverIntersectionParallel) {
     // Change lights to parallel direction
-    changeSunLightsAndPerturbationToParallel();
+    changeSunLightsAndPerturbationToParallel(solarScene->getSunray());
 
     // Construct arguments
     SunrayArgument sunrayArgument = QMCRTracer.generateSunrayArgument(solarScene->getSunray());

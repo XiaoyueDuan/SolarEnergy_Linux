@@ -9,6 +9,7 @@
 #include "global_function.cuh"
 #include "QuasiMonteCarloRayTracer.h"
 #include "RectangleReceiverRectGridRayTracing.cuh"
+#include "CylinderReceiverRectGridRayTracing.cuh"
 #include "RectGrid.cuh"
 
 void QuasiMonteCarloRayTracer::rayTracing(SolarScene *solarScene, int heliostat_id) {
@@ -41,6 +42,17 @@ void QuasiMonteCarloRayTracer::rayTracing(SolarScene *solarScene, int heliostat_
             float factor = sunray->getDNI() * ratio * ratio * sunray->getReflectiveRate()
                     / float(sunray->getNumOfSunshapeLightsPerGroup()) ;
             RectangleReceiverRectGridRayTracing(sunrayArgument, rectangleReceiver, rectGrid, heliostatArgument,
+                                                d_subHeliostat_vertexes, factor);
+            break;
+        }
+        case 10: {
+            /** CylinderReceiver v.s. RectGrid*/
+            auto cylinderReceiver = dynamic_cast<CylinderReceiver *>(receiver);
+            auto rectGrid = dynamic_cast<RectGrid *>(grid);
+            float ratio = heliostat->getPixelLength() / receiver->getPixelLength();
+            float factor = sunray->getDNI() * ratio * ratio * sunray->getReflectiveRate()
+                           / float(sunray->getNumOfSunshapeLightsPerGroup()) ;
+            CylinderReceiverRectGridRayTracing(sunrayArgument, cylinderReceiver, rectGrid, heliostatArgument,
                                                 d_subHeliostat_vertexes, factor);
             break;
         }
@@ -131,6 +143,11 @@ int QuasiMonteCarloRayTracer::setFlatRectangleHeliostatVertexes(float3 *&d_helio
     if (start_id < 0 || start_id > end_id || end_id > heliostats.size()) {
         throw std::runtime_error(
                 __FILE__". The index " + std::to_string(start_id) + " and " + std::to_string(end_id) + " is invalid.");
+    }
+
+    if(d_heliostat_vertexes!= nullptr) {
+        checkCudaErrors(cudaFree(d_heliostat_vertexes));
+        d_heliostat_vertexes = nullptr;
     }
 
     std::vector<float3> subHeliostatVertexes;

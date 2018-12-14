@@ -22,7 +22,7 @@ class CylinderReceiver : public Receiver {
 public:
     __device__ __host__ CylinderReceiver() {}
 
-    __device__ __host__ bool GIntersect(const float3 &orig, const float3 &dir, float &t, float &u, float &v, float3 &normal) {
+    __device__ __host__ bool GIntersect(const float3 &orig, const float3 &dir, float &t, float &u, float &v) {
         // If the origin in the cylinder, it won't intersect with it
         if(innerToCylinder(orig)) {
             return false;
@@ -54,8 +54,6 @@ public:
         if (sine < 0) {
             v = 1 - v;
         }
-
-        normal = normalize(make_float3(intersect_pos.x-pos_.x, 0.0f, intersect_pos.z-pos_.z));
         return true;
     }
 
@@ -64,7 +62,7 @@ public:
     virtual float3 getFocusCenter(const float3 &heliostat_position);
 
 private:
-    bool innerToCylinder(const float3 &orig) {
+    __device__ __host__ bool innerToCylinder(const float3 &orig) {
         float2 Ro = make_float2(pos_.x - orig.x, pos_.z - orig.z);
         return dot(Ro, Ro) <= size_.x * size_.x;
     }
