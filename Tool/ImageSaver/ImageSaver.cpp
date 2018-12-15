@@ -44,8 +44,7 @@ void ImageSaver::saveText(std::string filename, int height, int width, float *h_
         }
     }
 
-    std::cout << "Max value is " << max_value << "." << std::endl;
-    std::cout << "Sum value is " << summation_value << "." << std::endl;
+    std::cout << "Max value is " << max_value << ". Sum value is " << summation_value << "." << std::endl;
 
     fout << ss.rdbuf();
     fout.close();

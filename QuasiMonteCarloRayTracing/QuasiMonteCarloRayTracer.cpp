@@ -26,7 +26,8 @@ void QuasiMonteCarloRayTracer::rayTracing(SolarScene *solarScene, int heliostat_
     // Construct the sub-heliostat vertexes array
     float3 *d_subHeliostat_vertexes = nullptr;
     setFlatRectangleHeliostatVertexes(d_subHeliostat_vertexes, solarScene->getHeliostats(),
-                                      grid->getStartHeliostatPosition(), grid->getNumberOfHeliostats());
+                                      grid->getStartHeliostatPosition(),
+                                      grid->getStartHeliostatPosition() + grid->getNumberOfHeliostats());
 
     // Construct arguments
     SunrayArgument sunrayArgument = generateSunrayArgument(sunray);

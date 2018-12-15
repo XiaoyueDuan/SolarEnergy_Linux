@@ -3,6 +3,6 @@
 #include "RayTracingPipeline.h"
 
 int main(int argc, char *argv[]) {
-    RayTracingPipeline(argc, argv);
+    RayTracingPipeline::rayTracing(argc, argv);
     return 0;
 }

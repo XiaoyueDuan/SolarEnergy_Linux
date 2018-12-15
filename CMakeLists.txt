@@ -27,11 +27,11 @@ set(GOOGLE_TEST_PATH SolarEnergyRayTracingTests)
 add_subdirectory(${GOOGLE_TEST_PATH})
 
 # Set Libs
-set (EXTRA_LIBS ${EXTRA_LIBS} quasiMonteCarloRayTracing
-        argumentParser image_saver)
+set(EXTRA_LIBS ${EXTRA_LIBS} rayTracingPipeline)
 
 # Finial Project
-cuda_add_executable(SolarEnergyRayTracing main.cpp RayTracingPipeline.cpp)
-target_link_libraries (SolarEnergyRayTracing ${EXTRA_LIBS})
+cuda_add_executable(SolarEnergyRayTracing main.cpp)
+target_link_libraries(SolarEnergyRayTracing ${EXTRA_LIBS})
+target_include_directories(SolarEnergyRayTracing PUBLIC RayTracingPipeline/)
 
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")

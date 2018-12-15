@@ -38,9 +38,14 @@ int boxIntersect(int mirrorBeiginId,
                                   (max_pos - pos).y / interval.y,
                                   (max_pos - pos).z / interval.z);
 
-    for (int x = max(0, min_grid_pos.x); x <= min(grid_num.x-1, max_grid_pos.x); ++x) {
-        for (int y = max(0, min_grid_pos.y); y <= min(grid_num.y-1, max_grid_pos.y); ++y) {
-            for (int z = max(0, min_grid_pos.z); z <= min(grid_num.z-1, max_grid_pos.z); ++z) {
+    if (min_grid_pos.x < 0 || min_grid_pos.y < 0 || min_grid_pos.z < 0 ||
+        max_grid_pos.x >= grid_num.x || max_grid_pos.y >= grid_num.y || max_grid_pos.z >= grid_num.z) {
+        std::cerr << "The heliostats may out of the grid boundary. Please check your file." << std::endl;
+    }
+
+    for (int x = max(0, min_grid_pos.x); x <= min(grid_num.x - 1, max_grid_pos.x); ++x) {
+        for (int y = max(0, min_grid_pos.y); y <= min(grid_num.y - 1, max_grid_pos.y); ++y) {
+            for (int z = max(0, min_grid_pos.z); z <= min(grid_num.z - 1, max_grid_pos.z); ++z) {
                 int pos_id = x * grid_num.y * grid_num.z + y * grid_num.z + z;
                 for (int i = 0; i < subMirrorSize; ++i) {
                     grid_mirrow_match_vector[pos_id].push_back(mirrorBeiginId + i);
