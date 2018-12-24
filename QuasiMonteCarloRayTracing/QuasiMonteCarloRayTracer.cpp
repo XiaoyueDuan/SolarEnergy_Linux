@@ -160,7 +160,7 @@ int QuasiMonteCarloRayTracer::setFlatRectangleHeliostatVertexes(float3 *&d_helio
         h_heliostat_vertexes[i] = subHeliostatVertexes[i];
     }
 
-    global_func::cpu2gpu(d_heliostat_vertexes, h_heliostat_vertexes, 3 * (subHeliostatVertexes.size()));
+    global_func::cpu2gpu(d_heliostat_vertexes, h_heliostat_vertexes, subHeliostatVertexes.size());
     delete[] h_heliostat_vertexes;
     h_heliostat_vertexes = nullptr;
     return subHeliostatVertexes.size();
