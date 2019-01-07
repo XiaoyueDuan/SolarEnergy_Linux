@@ -69,19 +69,36 @@ namespace samplelights {
             return;
 
         float u = d_0_1[myId] * A;
-
         if (u < integration_less_465) {
             int id = max_less_index(d_cdf, u, n);
-            d_0_1[myId] = (u - d_cdf[id].y) * d_k[id] + d_cdf[id].x;
+            u = (u - d_cdf[id].y) * d_k[id] + d_cdf[id].x;
+
+            u = atan(sqrtf(u/4.65f) * 0.5016916f); // tan(0.465rad) = 0.5016916f
         } else {
-            d_0_1[myId] = powf((u - integration_less_465) * B + C, 1 / (gamma + 1));
+            u = powf((u - integration_less_465) * B + C, 1 / (gamma + 1));
+
+            float ri2 = 0.5016916f * 0.5016916f;        // tan(0.465rad) = 0.5016916f
+            float ro2 = 1.340874f * 1.340874f;          // tan(0.93rad) = 1.340874f
+            u = atan(sqrtf(ro2 + (u-4.65f)/4.65f * (ro2 - ri2)));
         }
-        d_0_1[myId] /= 1000.0f;
+        d_0_1[myId] = u / 100.0f;
         return;
     }
 
-    __global__ void
-    map_angle2xyz(float3 *d_turbulance, const float *d_nonUniform, const float *d_uniform, const size_t size) {
+    __global__ void map_permuation(float3 *d_turbulance, const float *d_x, const float *d_z, const size_t size) {
+        unsigned int myId = global_func::getThreadId();
+        if (myId >= size)
+            return;
+
+        d_turbulance[myId].x = d_x[myId];
+        d_turbulance[myId].y = 1.0f;
+        d_turbulance[myId].z = d_z[myId];
+
+        d_turbulance[myId] = normalize(d_turbulance[myId]);
+    }
+
+    __global__ void map_angle2xyz(float3 *d_turbulance, const float *d_nonUniform, const float *d_uniform,
+            const size_t size) {
         unsigned int myId = global_func::getThreadId();
         if (myId >= size)
             return;
@@ -143,30 +160,30 @@ bool SceneProcessor::set_perturbation(Sunray &sunray) {
     checkCudaErrors(cudaMalloc((void **) &d_permutation, sizeof(float3) * size));
 
     //	Step 2:	Allocate memory for theta and phi
-    float *d_guassian_theta = nullptr;
-    checkCudaErrors(cudaMalloc((void **) &d_guassian_theta, sizeof(float) * size));
-    float *d_uniform_phi = nullptr;
-    checkCudaErrors(cudaMalloc((void **) &d_uniform_phi, sizeof(float) * size));
+    float *d_gaussian_x = nullptr;
+    checkCudaErrors(cudaMalloc((void **) &d_gaussian_x, sizeof(float) * size));
+    float *d_gaussian_z = nullptr;
+    checkCudaErrors(cudaMalloc((void **) &d_gaussian_z, sizeof(float) * size));
 
     //	Step 3:	Generate theta and phi
-    RandomGenerator::gpu_Gaussian(d_guassian_theta, 0.0f, sceneConfiguration->getDisturb_std(), size);
-    RandomGenerator::gpu_Uniform(d_uniform_phi, size);
+    RandomGenerator::gpu_Gaussian(d_gaussian_x, 0.0f, sceneConfiguration->getDisturb_std(), size);
+    RandomGenerator::gpu_Gaussian(d_gaussian_z, 0.0f, sceneConfiguration->getDisturb_std(), size);
 
 #ifdef SCENE_PROCESSOR_TEST_CPP
-    samplelights::draw_distribution(d_guassian_theta, size, -0.050f, 0.050f, "theta");
-    samplelights::draw_distribution(d_uniform_phi, size, 0.0f, 1.0f, "phi");
+    samplelights::draw_distribution(d_gaussian_x, size, -0.050f, 0.050f, "theta");
+    samplelights::draw_distribution(d_gaussian_z, size, -0.050f, 0.050f, "phi");
 #endif
 
     //	Step 4:	(theta, phi) -> ( x, y, z)
     int nThreads;
     dim3 nBlocks;
     global_func::setThreadsBlocks(nBlocks, nThreads, size);
-    samplelights::map_angle2xyz << < nBlocks, nThreads >> > (d_permutation, d_guassian_theta, d_uniform_phi, size);
+    samplelights::map_permuation << < nBlocks, nThreads >> > (d_permutation, d_gaussian_x, d_gaussian_z, size);
     sunray.setDevicePerturbation(d_permutation);
 
     //	Step 5: Cleanup
-    checkCudaErrors(cudaFree(d_guassian_theta));
-    checkCudaErrors(cudaFree(d_uniform_phi));
+    checkCudaErrors(cudaFree(d_gaussian_x));
+    checkCudaErrors(cudaFree(d_gaussian_z));
 
     return true;
 }
