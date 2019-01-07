@@ -17,3 +17,6 @@ Scene/json-develop
 OutputFiles/
 SolarEnergyRayTracingTests/ToolTests/test_output
 
+# Input
+InputFiles/Delingha
+InputFiles/SolTraceHeliostatFiled

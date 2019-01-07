@@ -11,6 +11,8 @@
 #include "vector_arithmetic.cuh"
 #include "global_constant.h"
 
+#include <stdio.h>
+
 /**
  * Note:
  *  - size_：
@@ -24,7 +26,7 @@ public:
 
     __device__ __host__ bool GIntersect(const float3 &orig, const float3 &dir, float &t, float &u, float &v) {
         // If the origin in the cylinder, it won't intersect with it
-        if(innerToCylinder(orig)) {
+        if (innerToCylinder(orig)) {
             return false;
         }
 
@@ -44,14 +46,20 @@ public:
 
         float3 intersect_pos = t * dir + orig;
         u = (intersect_pos.y - pos_.y) / size_.y + 0.5f;
-        if (u < 0) {
+        if (u < 0.0f || u > 1.0f) {
             return false;
         }
 
-        float cosine = (intersect_pos.x - pos_.x) / size_.x;
-        float sine = (intersect_pos.z - pos_.z) / size_.x;
-        v = acosf(cosine) / (2 * M_PI);
-        if (sine < 0) {
+        float2 intersect_origin_dir = make_float2(intersect_pos.x - pos_.x, intersect_pos.z - pos_.z);
+        intersect_origin_dir = normalize(intersect_origin_dir); // (cosine, sine)
+
+        if (intersect_origin_dir.x < -1 || intersect_origin_dir.x > 1) {
+            printf("\nerror occurs on intersect position: %f, %f, %f\n",
+                   intersect_pos.x, intersect_pos.y, intersect_pos.z);
+        }
+        v = acosf(intersect_origin_dir.x) / (2 * M_PI);
+//        v = (cosine > 1.0f) ? 0 : ((cosine < -1.0f) ? 0.5f : acosf(cosine) / (2 * M_PI));
+        if (intersect_origin_dir.y < 0) {
             v = 1 - v;
         }
         return true;

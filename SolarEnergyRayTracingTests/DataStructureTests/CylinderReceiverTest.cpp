@@ -55,6 +55,18 @@ TEST_F(CylinderReceiverFixture, hasIntersection) {
     EXPECT_TRUE(Float3Eq(make_float3(expect_distance, 0.75f, 0.125f), ans, 1e-4));      // expect u: 0.75, v: 0.125
 }
 
+TEST_F(CylinderReceiverFixture, boundaryIntersection) {
+    float3 ans; // t, u, v
+
+    // 1. The intersection position is a little bit different from theory one and it leads to cosine out of the range of [-1, 1]
+    cylinderReceiver.setSize(make_float3(3.0f, 8.f, 0.0f));
+    cylinderReceiver.setPosition(make_float3(0.0f, 0.0f, -3.0f));
+    float3 origin_wrong = make_float3(-7.673, -0.575, -3.224);
+    float3 dir_wrong = make_float3(0.999, 0.010, 0.048);
+    dir_wrong = normalize(dir_wrong);
+    EXPECT_TRUE(cylinderReceiver.GIntersect(origin_wrong, dir_wrong, ans.x, ans.y, ans.z));
+}
+
 TEST_F(CylinderReceiverFixture, noIntersection) {
     cylinderReceiver.setPosition(make_float3(2.0f, 2.0f, 0.0f));
 

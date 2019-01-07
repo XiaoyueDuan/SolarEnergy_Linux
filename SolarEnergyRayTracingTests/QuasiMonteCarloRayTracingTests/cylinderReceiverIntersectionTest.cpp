@@ -95,3 +95,26 @@ TEST_F(cylinderReceiverIntersectionFixture, cylinderReceiverIntersectionParallel
     std::cout<<"\nHeliostat 1 with shadowing - (r: "<<resolution.y<<", c:"<<resolution.x<<")"<<std::endl;
     print(image, resolution);
 }
+
+TEST_F(cylinderReceiverIntersectionFixture, cylinderReceiverIntersectionForRealGrid3) {
+    // Construct arguments
+    SunrayArgument sunrayArgument = QMCRTracer.generateSunrayArgument(solarScene->getSunray());
+    CylinderReceiver *cylinderReceiver = dynamic_cast<CylinderReceiver *>(solarScene->getReceivers()[0]);
+    RectGrid *rectGrid = dynamic_cast<RectGrid *>(solarScene->getGrid0s()[2]);
+    float factor = 1.0f;
+    float3 *d_subHeliostat_vertexes = nullptr;
+    int start_heliostat_id = rectGrid->getStartHeliostatPosition();
+    int end_heliostat_id = start_heliostat_id + rectGrid->getNumberOfHeliostats();
+    QMCRTracer.setFlatRectangleHeliostatVertexes(d_subHeliostat_vertexes, solarScene->getHeliostats(),
+                                                 start_heliostat_id, end_heliostat_id);
+
+    // Heliostat 4 without shadow(index = 3)
+    HeliostatArgument heliostatArgument0 = QMCRTracer.generateHeliostatArgument(solarScene, 3);
+    CylinderReceiverRectGridRayTracing(sunrayArgument, cylinderReceiver, rectGrid, heliostatArgument0,
+                                       d_subHeliostat_vertexes, factor);
+
+    int2 resolution = cylinderReceiver->getResolution();
+    vector<float> image = deviceArray2vector(cylinderReceiver->getDeviceImage(), resolution.y * resolution.x);
+    std::cout<<"\nHeliostat 1 without shadowing - (r: "<<resolution.y<<", c:"<<resolution.x<<")"<<std::endl;
+    print(image, resolution);
+}
