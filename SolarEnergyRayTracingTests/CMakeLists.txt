@@ -5,3 +5,5 @@ add_subdirectory(DataStructureTests)
 add_subdirectory(ToolTests)
 add_subdirectory(QuasiMonteCarloRayTracingTests)
 add_subdirectory(RayTracingPipelineTests)
+
+add_subdirectory(GenerateTemporaryOutput)
