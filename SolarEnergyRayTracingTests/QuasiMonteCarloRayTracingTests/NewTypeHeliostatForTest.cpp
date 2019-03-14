@@ -34,3 +34,7 @@ void NewTypeHeliostatForTest::CGetSubHeliostatVertexes(std::vector<float3> &SubH
 void NewTypeHeliostatForTest::setSize(float3 size) {
     size_ = size;
 }
+
+std::vector<float> NewTypeHeliostatForTest::getSurfaceProperty() {
+    return std::vector<float>(6, -1);
+}

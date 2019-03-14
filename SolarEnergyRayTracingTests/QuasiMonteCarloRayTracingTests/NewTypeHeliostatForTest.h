@@ -16,6 +16,9 @@ public:
     virtual void setSize(float3 size);
 
     virtual void CGetSubHeliostatVertexes(std::vector<float3> &SubHeliostatVertexes);
+
+    virtual void setSurfaceProperty(const std::vector<float> &surface_property){}
+    virtual std::vector<float> getSurfaceProperty();
 };
 
 
