@@ -7,6 +7,7 @@
 #include "FocusFlatRectangleHelio.cuh"
 #include "global_function.cuh"
 #include "DataStructureUtil.h"
+#include "SceneLoader.h"
 
 class FocusFlatRectangleHelioFixture : public ::testing::Test {
 private:
@@ -259,4 +260,13 @@ TEST_F(FocusFlatRectangleHelioFixture, CGetDiscreteMicroHelioOriginsAndNormals) 
     checkCudaErrors(cudaFree(d_microhelio_normals));
     d_microhelio_centers = nullptr;
     d_microhelio_normals = nullptr;
+}
+
+
+TEST_F(FocusFlatRectangleHelioFixture, LoadFocusFlatRectangle) {
+    SolarScene *solarScene = SolarScene::GetInstance();
+    SceneLoader *sceneLoader = new SceneLoader();
+
+    std::string scenePath = "test_file/test_scene_good_for_focusFlatRectangleHelio.scn";
+    EXPECT_TRUE(sceneLoader->SceneFileRead(solarScene, scenePath));
 }

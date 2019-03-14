@@ -22,7 +22,7 @@ end
 # Heliostats
 gap 	0.100000 	0.300000
 matrix	2			3
-surface_property 1 -1 -1 -1 -1 -1
+surface_property 2.5 -1 -1 -1 -1 -1
 helio	0.0000000	2.0000000	2.5000000
 		1.7000000 	0.1000000	2.3000000
 
