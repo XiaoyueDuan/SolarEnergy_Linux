@@ -8,6 +8,7 @@
 #include "SceneLoader.h"
 
 #include "RectangleHelio.cuh"
+#include "FocusFlatRectangleHelio.cuh"
 #include "RectangleReceiver.cuh"
 #include "CylinderReceiver.cuh"
 #include "RectGrid.cuh"
@@ -157,17 +158,21 @@ int SceneLoader::add_grid(SolarScene *solarScene,
 }
 
 void SceneLoader::add_heliostat(SolarScene *solarScene, std::istream &stringstream,
-                                int type, float2 gap, int2 matrix) {
+                                int type, float2 gap, int2 matrix, const std::vector<float> &surface_property) {
     Heliostat *heliostat = nullptr;
     switch (type) {
         case 0:
             heliostat = new RectangleHelio();
+            break;
+        case 1:
+            heliostat = new FocusFlatRectangleHelio();
             break;
         default:
             throw std::runtime_error("Heliostat type are not defined.\n");
     }
     heliostat->setGap(gap);
     heliostat->setRowAndColumn(matrix);
+    heliostat->setSurfaceProperty(surface_property);
 
     float3 position, size;
     stringstream >> position.x >> position.y >> position.z;
@@ -223,6 +228,7 @@ void SceneLoader::checkScene(SolarScene *solarScene) {
 bool SceneLoader::SceneFileRead(SolarScene *solarScene, std::string filepath) {
     int2 matrix = make_int2(1, 1);
     float2 gap = make_float2(0.0f, 0.0f);
+    std::vector<float> surface_property(6, -1.0f);
     std::string head;
     int receiver_id = -1;
     int grid_id_for_each_receiver = 0;
@@ -251,6 +257,9 @@ bool SceneLoader::SceneFileRead(SolarScene *solarScene, std::string filepath) {
                 scene_stream >> gap.x >> gap.y;
             } else if (head == "matrix") {
                 scene_stream >> matrix.x >> matrix.y;
+            } else if (head == "surface_property") {
+                scene_stream >> surface_property[0] >> surface_property[1] >> surface_property[2]
+                             >> surface_property[3] >> surface_property[4] >> surface_property[5];
             } else if (head == "ground") {
                 current_status = sceneRETree_.step_forward(current_status, 'D');
                 add_ground(solarScene, scene_stream);
@@ -266,7 +275,7 @@ bool SceneLoader::SceneFileRead(SolarScene *solarScene, std::string filepath) {
                 heliostat_id_for_each_gird = 0;
             } else if (head == "helio") {
                 current_status = sceneRETree_.step_forward(current_status, 'H');
-                add_heliostat(solarScene, scene_stream, heliostat_type, gap, matrix);
+                add_heliostat(solarScene, scene_stream, heliostat_type, gap, matrix, surface_property);
                 ++heliostat_id_for_each_gird;
                 ++current_total_heliostat;
             } else {

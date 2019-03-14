@@ -26,6 +26,9 @@ public:
 
     virtual void CGetSubHeliostatVertexes(std::vector<float3> &SubHeliostatVertexes) = 0;
 
+    virtual void setSurfaceProperty(const std::vector<float> &surface_property) = 0;
+    virtual std::vector<float> getSurfaceProperty() = 0;
+
     int* generateDeviceMicrohelioGroup(int num_group, int size);
 
     float3 getPosition() const;

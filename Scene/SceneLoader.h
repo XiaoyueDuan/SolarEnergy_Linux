@@ -19,7 +19,7 @@ private:
     int add_grid(SolarScene *solarScene,
             std::istream &stringstream, int receiver_index, int heliostat_start_index);
     void add_heliostat(SolarScene *solarScene, std::istream &stringstream,
-            int type, float2 gap, int2 matrix);
+            int type, float2 gap, int2 matrix, const std::vector<float> &surface_property);
     void checkScene(SolarScene *solarScene);
 public:
     SceneLoader():current_status(nullptr) {}

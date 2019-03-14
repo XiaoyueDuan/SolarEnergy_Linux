@@ -86,3 +86,7 @@ void RectangleHelio::CGetSubHeliostatVertexes(std::vector<float3> &subHeliostatV
     subHeliostatVertexes.push_back(vertex_[1]);
     subHeliostatVertexes.push_back(vertex_[2]);
 }
+
+std::vector<float> RectangleHelio::getSurfaceProperty() {
+    return std::vector<float>(6, -1.0f);
+}

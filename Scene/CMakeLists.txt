@@ -6,6 +6,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
 
 # packages
 find_package(CUDA REQUIRED)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 
 file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp *.cuh)
 list(FILTER CURRENT_HEADERS EXCLUDE REGEX "json-develop/.*") # exclude files under json-develop/

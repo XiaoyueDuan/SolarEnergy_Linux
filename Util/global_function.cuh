@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <math.h>
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
@@ -22,12 +23,12 @@ namespace global_func {
         // |n.x		n.y		n.z|
         // |v.x		v.y		v.z|
 
+        if(fabs(aligned_normal.x)<Epsilon && fabs(aligned_normal.z)<Epsilon) {
+            return d_local;
+        }
+
         float3 u, n, v;// could be shared
-
         n = aligned_normal;
-
-        if (abs(n.x) < Epsilon && abs(n.z) < Epsilon)
-            return d_local; //	parallel to (0,1,0), don't need to transform
 
         u = cross(make_float3(0.0f, 1.0f, 0.0f), n);
         u = normalize(u);

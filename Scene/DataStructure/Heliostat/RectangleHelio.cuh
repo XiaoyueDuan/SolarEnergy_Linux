@@ -14,6 +14,9 @@ public:
 
     virtual int CGetDiscreteMicroHelioOriginsAndNormals(float3 *&d_microhelio_vertexs, float3 *&d_microhelio_normals);
     virtual void CGetSubHeliostatVertexes(std::vector<float3> &);
+
+    virtual void setSurfaceProperty(const std::vector<float> &surface_property){};
+    virtual std::vector<float> getSurfaceProperty();
 };
 
 #endif //SOLARENERGYRAYTRACING_RECTANGLEHELIO_CUH
