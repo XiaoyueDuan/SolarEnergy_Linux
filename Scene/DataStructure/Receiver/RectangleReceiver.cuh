@@ -8,8 +8,7 @@ class RectangleReceiver :public Receiver
 {
 public:
     __device__ __host__ RectangleReceiver() {}
-    RectangleReceiver(const RectangleReceiver &rect_receiver):Receiver(rect_receiver)
-    {
+    RectangleReceiver(const RectangleReceiver &rect_receiver):Receiver(rect_receiver) {
         rect_vertex_[0] = rect_receiver.getRectVertex(0);
         rect_vertex_[1] = rect_receiver.getRectVertex(1);
         rect_vertex_[2] = rect_receiver.getRectVertex(2);
@@ -19,6 +18,9 @@ public:
 
     // TODO: add tests
     __device__ __host__ bool GIntersect(const float3 &orig, const float3 &dir, float &t, float &u, float &v) {
+        if(dot(normal_, dir)>=0)
+            return false;
+
         return global_func::rayParallelogramIntersect(orig, dir,
                                                       rect_vertex_[0], rect_vertex_[1], rect_vertex_[3], t, u, v);
     }

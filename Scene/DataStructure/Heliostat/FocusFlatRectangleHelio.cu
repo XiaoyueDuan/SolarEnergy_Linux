@@ -41,8 +41,8 @@ namespace focusFlatRectangle_heliostat {
         if (myId >= size)
             return;
 
-        d_microhelio_world_normals[myId] = global_func::local2world(d_microhelio_local_normals[myId], normal);
-
+        d_microhelio_world_normals[myId] =
+                focusFlatRectangleHeliostatLocal2World(d_microhelio_local_normals[myId], normal);
     }
 
     // Step 3: Transform local micro-helio center to world postion
